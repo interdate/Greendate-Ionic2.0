@@ -40,9 +40,12 @@
               },
               {
                 "input": "src/app/app.scss"
+              },
+              {
+                "input": "src/assets/css/custom.css"
               }
             ],
-            "scripts": [],
+            "scripts": ["node_modules/jquery/dist/jquery.min.js"],
             "es5BrowserSupport": true
           },
           "configurations": {
@@ -102,8 +105,13 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
-            "styles": [],
-            "scripts": [],
+            "styles": [
+
+            ],
+            "scripts": [
+
+
+            ],
             "assets": [
               {
                 "glob": "favicon.ico",

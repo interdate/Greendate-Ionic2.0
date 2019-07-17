@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "72562107329",
+    "firebase_url": "https://greendate-176907.firebaseio.com",
+    "project_id": "greendate-176907",
+    "storage_bucket": "greendate-176907.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:72562107329:android:7f7fafe0d778ed48",
+        "android_client_info": {
+          "package_name": "il.co.greendate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "72562107329-g3feifhgth2pkmbhm6q343rclp8pog10.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9H-e10lI--bHTzfH41CQ4cCyrK_VOdkc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "72562107329-g3feifhgth2pkmbhm6q343rclp8pog10.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,26 @@
+page-edit-profile {
+
+  .item .item-inner .input-wrapper .input:before {
+    right: auto;
+    left: 0px;
+  }
+
+  .item .item-inner .input-wrapper select-alertless:before {
+    right: auto;
+    left: 0px;
+  }
+
+  #about textarea, #looking textarea {
+    width: 100%;
+    margin: 3% 0;
+  }
+
+  .citylist {
+    display: none;
+  }
+
+  .citylist{
+    display: none;
+  }
+
+}

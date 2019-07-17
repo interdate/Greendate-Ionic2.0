@@ -1,0 +1,105 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>registration</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="inner_form_top">
+        <ul>
+            <li class="active"><span class="fnumber profileSpan">1</span><span class="ftext"></span></li>
+            <li><span class="fnumber profileSpan">2</span></li>
+            <li><span class="fnumber profileSpan">3</span></li>
+            <li><span class="fnumber profileSpan">4</span></li>
+            <!--<ion-item [ngStyle]="{ 'background': 'transparent', 'padding': '0' }"><span class="fnumber profileSpan">4</span></ion-item>-->
+        </ul>
+        <div class="clr"></div>
+    </div>
+
+
+
+
+    <div class="container">
+        <div *ngFor="let field of formKeys; let i = index" [attr.data-index]="i">
+
+            <div class="input text" *ngIf="form[field].type === 'text'">
+                <div [ngClass]="{'yellow-bg':  err[formKeys[i].errors] && err[formKeys[i].errors]?.length != 0}" class="placeholder">{{ form[field].label }}
+                </div>
+                <div>
+                    <ion-input class="ion-input" type="text" ngDefaultControl [(ngModel)]="form[field].value" required>
+                    </ion-input>
+                </div>
+                <div class="err">{{ err[formKeys[i].errors] }}</div>
+            </div>
+            <div class="input text" *ngIf="!form[field].type && isObject(form[field])">
+                <div class="input text" *ngFor="let a of getKeys(form[field])">
+                    <div [ngClass]="{'yellow-bg':  err[formKeys[i].errors] && err[formKeys[i].errors]?.length != 0}"   class="placeholder">{{form[field][a].label }}
+                    </div>
+                    <div  class="ion-item">
+                        <ion-input  class="ion-input" type="text" ngDefaultControl [(ngModel)]="form[field][a].value" aria-required="true" minlength="7"></ion-input>
+                    </div>
+                </div>
+                <div class="err">{{ err[formKeys[i].errors] }}</div>
+            </div>
+            <div class="input text" *ngIf="form[field].type === 'entity'">
+                <div class="input">
+                    <div [ngClass]="{'yellow-bg':  err[formKeys[i].errors] && err[formKeys[i].errors]?.length != 0}" class="placeholder">{{ form[field].label }}
+                    </div>
+                    <div class="ion-item">
+                        <ion-input  class="ion-input" (click)="openSelect2(form[field], field)">
+                            {{ usersChooses[field] }}
+                        </ion-input>
+                    </div>
+                    <div class="err">{{ err[formKeys[i].errors] }}</div>
+                </div>
+            </div>
+            <div class="input text" *ngIf="form[field].type === 'birthday'">
+                <div [ngClass]="{'yellow-bg':  err[formKeys[i].errors] && err[formKeys[i].errors]?.length != 0}" class="placeholder">{{ form[field].label }}
+                </div>
+                <div class="ion-item">
+                    <ion-datetime ngDefaultControl  [(ngModel)]="birth" displayFormat="YYYY MM DD" [max]="maxYear()"
+                                   pickerFormat="YYYY MM DD" [doneText]="'אישור'" [cancelText]="'ביטול'">
+
+                    </ion-datetime>
+                </div>
+                <div class="err">{{ err[formKeys[i].errors] }}</div>
+            </div>
+            <div *ngIf="form[field].type  == 'checkbox'">
+                <div [innerHTML]="" class="value agree">{{ form[field].text1 }} <a
+                        (click)="getPage(form[field].text2 )">{{ form[field].text3 }}</a> {{ form[field].text4}}
+                </div>
+                <div class="input agree">
+                    <div class="ion-item">
+                        <ion-checkbox checked="false" color="danger" ngDefaultControl [(ngModel)]="form[field].value"></ion-checkbox>
+                    </div>
+                </div>
+                <div class="err">{{ err[formKeys[i].errors] }}</div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+        <div *ngFor="let key of errKeys">
+            <div *ngIf="key != 'agree' && err[key].errors" class="err">{{ form.form[key]?.label }}: {{ err[key].errors
+                }}
+            </div>
+        </div>
+        <div *ngIf="err.password.children.first.errors && err.password.children.first.errors?.length != 0" class="err">
+            {{ form.form.password.first.label }}: {{ err.password.children.first.errors }}
+        </div>
+        <div *ngIf="err.email.children.first.errors  && err.email.children.first.errors?.length != 0" class="err">{{
+
+            form.form.email.first.label }}: {{ err.email.children.first.errors }}
+        </div>
+
+        <div *ngIf="allfields  && allfields?.length != 0" class="err">{{ allfields }}</div>
+
+    <ion-button  color="danger" (click)="formSubmit()"expand="full"  >{{form.next_step}}
+    </ion-button>
+
+</ion-content>
+
+

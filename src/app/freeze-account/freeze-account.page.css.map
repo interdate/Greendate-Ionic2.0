@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AACE,oBAAqB;EAAE,cAAc,EAAE,IAAI;;AAC7C,KAAM;EACJ,SAAS,EAAE,IAAI",
+"sources": ["freeze-account.page.scss"],
+"names": [],
+"file": "freeze-account.page.css"
+}

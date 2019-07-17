@@ -1,0 +1,33 @@
+
+  .notifications {
+    width: 33px;
+  }
+
+  .bingo {
+    width: 65px;
+  }
+
+  .segment-md-secondary .segment-button.activated, .segment-md-secondary .segment-button.segment-activated {
+    --border-color: #d50312;
+  }
+
+  ion-segment-button .segment-button.segment-activated {
+    background: transparent;
+  }
+/*
+  ion-segment-button {
+    padding: 7px;
+    border: none;
+    border-bottom: 2px solid #cccccc;
+    border-radius: 0;
+  }
+  .segment-button-checked{
+    border-bottom: 2px solid #ff0000;
+  }*/
+
+  .segment-ios .segment-button {
+    height: 4rem;
+  }
+
+
+

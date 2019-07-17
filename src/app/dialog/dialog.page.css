@@ -1,0 +1,107 @@
+.text-input-md {
+  margin: 2px 0 0 10px; }
+
+.usr_msg ion-card-content {
+  padding: 0; }
+
+.date {
+  text-align: center;
+  font-size: 10px;
+  color: #666;
+  top: -6px;
+  left: -38px; }
+
+.other-msg {
+  float: left; }
+
+.toolbar-ios {
+  background-color: lightgrey; }
+
+.footer .toolbar-content-ios {
+  margin-top: 7px;
+  margin-bottom: 12px;
+  height: auto; }
+
+.v-ios-icon {
+  font-size: 2.9rem;
+  position: absolute;
+  top: -4px; }
+
+ion-textarea {
+  width: 74%;
+  height: 55px;
+  float: left; }
+
+.send-msg {
+  float: right; }
+
+.item-md, .item-ios {
+  background-color: #fff; }
+
+ion-footer .toolbar-background-md,
+ion-footer .toolbar-background-ios {
+  background-color: #ecedf3; }
+
+ion-footer .toolbar-background-ios {
+  height: 0px;
+  margin-top: auto; }
+
+ion-avatar div {
+  width: 40px;
+  height: 40px;
+  background-size: cover;
+  border-radius: 50%; }
+
+.dialog-avatar {
+  margin: 5px;
+  line-height: 40px;
+  background: left center no-repeat;
+  background-size: 40px auto;
+  text-align: center;
+  width: 100%; }
+
+.messages ion-card:not(.other-msg) {
+  background-color: #a29878;
+  float: right;
+  border-radius: 0;
+  box-shadow: 0px 2px 6px -2px; }
+
+.messages {
+  width: 84%;
+  margin: auto; }
+
+.item-md ion-avatar[item-left], .item-md ion-thumbnail[item-left],
+.item-ios ion-avatar[item-left], .item-ios ion-thumbnail[item-left] {
+  margin: 8px 13px; }
+
+/*.ion-ios-done-all{
+  font-size: 2.2em;
+}*/
+/*
+   position: absolute;
+  top: 9px;
+  left: 5px;
+*/
+.v-ios-icon {
+  font-size: 2.9rem;
+  position: absolute;
+  top: 0px;
+  left: 13px; }
+
+.trash-icon {
+  position: relative;
+  top: 17px;
+  left: -18px; }
+
+ion-cart {
+  border-radius: 0;
+  width: 85%; }
+
+.msg-item {
+  width: 90%;
+  border-radius: 0px;
+  padding: 0px 4px 0 17px;
+  margin: 1px 0px 18px 0;
+  height: 39px; }
+
+/*# sourceMappingURL=dialog.page.css.map */

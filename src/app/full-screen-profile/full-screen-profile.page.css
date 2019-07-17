@@ -1,0 +1,26 @@
+.content-md, .content-ios, .inner-scroll .scroll-y .overscroll {
+  --background: #000;
+  background-color: black;
+  direction: ltr; }
+
+ion-content {
+  --background: #000; }
+
+.close {
+  width: 21px;
+  height: 21px;
+  right: 23px;
+  top: 20px;
+  position: absolute;
+  z-index: 9999; }
+
+.profile-buttons .favorite-profile-btn,
+.profile-buttons .like-profile-btn,
+.profile-buttons .message-profile-btn {
+  background: rgba(233, 232, 229, 0.5);
+  width: 49px;
+  height: 49px;
+  margin-bottom: 5px;
+  border-radius: 50%; }
+
+/*# sourceMappingURL=full-screen-profile.page.css.map */
