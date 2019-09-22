@@ -2,9 +2,11 @@ import {Component, ViewChild, OnInit, ElementRef} from '@angular/core';
 import {ToastController, Events, ModalController} from '@ionic/angular';
 import {ApiQuery} from '../api.service';
 import {Geolocation } from '@ionic-native/geolocation/ngx'
-import {Router, ActivatedRoute} from "@angular/router";
+import {Router, ActivatedRoute, NavigationEnd, NavigationExtras} from "@angular/router";
 import {IonInfiniteScroll} from "@ionic/angular";
 import {IonContent} from "@ionic/angular";
+import {Platform} from "@ionic/angular";
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 
 
 
@@ -13,248 +15,329 @@ import {IonContent} from "@ionic/angular";
   selector: 'page-home',
   styleUrls: ['./home.page.scss'],
   templateUrl: 'home.page.html',
-  providers: []
 })
-export class HomePage implements OnInit{
+export class HomePage {
 
-  @ViewChild(IonContent) content: IonContent;
-  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
+    @ViewChild(IonContent) content: IonContent;
+    @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
-  public options: { filter: any } = {filter: 1};
-  list: any;
-  action: any;
-  offset: any;
-  page_counter: any;
-  loader: any = true;
-  username: any;
-  password: any;
-  blocked_img: any = false;
-  user_counter: any = 0;
-  form_filter: any;
-  filter: any = {filter: '', visible: ''};
-  users: any;
-  texts: any;
-  params: any = {action: 'search', filter: 'new', page: 1, list: ''};
-  params_str: any;
-  scrolling = false;
+    public options: { filter: any } = {filter: 1};
+    list: any;
+    action: any;
+    offset: any;
+    //page_counter: any;
+    loader: any = true;
+    username: any;
+    password: any;
+    blocked_img: any = false;
+    user_counter: any = 0;
+    form_filter: any;
+    filter: any = {filter: '', visible: ''};
+    users: any;
+    texts: any;
+    params: any = {action: 'search', filter: 'new', page: 1, list: ''};
+    params_str: any;
+    scrolling = false;
+    clicked: any;
+    subscription: any;
 
-  constructor(public api: ApiQuery,
-              public route: ActivatedRoute,
-              public router: Router,
-              public geolocation:Geolocation ,
-              public events: Events) {
+    constructor(public api: ApiQuery,
+                public route: ActivatedRoute,
+                public router: Router,
+                public geolocation: Geolocation,
+                public events: Events,
+                public splashScreen: SplashScreen,
+                public platform: Platform) {
 
-      this.api.pageName = 'home page';
--
-    console.log('in home page constructor');
-      this.route.queryParams.subscribe(params => {
-          console.log(JSON.stringify(params));
-          if (params && params.params) {
-              this.params_str = params.params;
-              this.params = JSON.parse(params.params);
-          }
+
+        this.loader = true;
+        this.params.page = 1;
+        this.route.queryParams.subscribe((params: any) => {
+            console.log(JSON.stringify(params));
+            if (params && params.params) {
+                // alert(1);
+                this.params_str = params.params;
+                this.params = JSON.parse(params.params);
+                this.content.scrollToTop(0);
+            } else {
+                this.params = {
+                    action: "search",
+                    filter: this.api.data['filter'] ? this.api.data['filter'] : 'new',
+                    list: "",
+                    page: 1
+                }
+            }
 
             this.blocked_img = false;
-          this.loader = true;
+            this.params_str = JSON.stringify(this.params);
+            if (this.params.list == 'black' || this.params.list == 'favorited') {
+                this.blocked_img = true;
+            }
 
-          this.params_str = JSON.stringify(this.params);
+            console.log(this.api.back);
+            this.getUsers();
+            this.api.back = false;
+            console.log('users run from constructor');
+            this.getLocation();
 
-          //If Current Page Is "Block" or "Favorited", than remove "Add Favorited";
-
-
-
-          if (this.params.list == 'black' || this.params.list == 'favorited') {
-              this.blocked_img = true;
-          }
-
-          this.page_counter = 1;
-
-
-          this.getUsers();
-
-          this.getLocation();
-
-      });
-
-  }
+        });
 
 
-        ngOnInit() {
-            console.log('in home page ng on init');
-        }
 
+        this.api.storage.get('deviceToken').then(token => {
+            if (token) {
+                this.api.sendPhoneId(token);
+            }
+        });
 
-  itemTapped(user) {
-
-    if (this.scrolling == false) {
-        this.api.data['user'] = user;
-      this.router.navigate(['/profile']);
-    }
-  }
-
-  filterStatus() {
-    this.options.filter = this.options.filter === 1 ? 0 : 1;
-  }
-
-  toDialog(user) {
-    this.api.data['user'] = user;
-   this.router.navigate(['/dialog']);
-  }
-
-  addLike(user) {
-
-    if (user.isAddLike == false) {
-
-      user.isAddLike = true;
-       this.api.toastCreate(' עשית לייק ל' + user.username, 2500);
-
-      let params = JSON.stringify({
-        toUser: user.id,
-      });
-
-      this.api.http.post(this.api.url + '/api/v2/likes/' + user.id, params, this.api.setHeaders(true, this.username, this.password)).subscribe(data => {
-      }, err => {
-      });
-    } else {
+        $('ion-content').resize();
 
     }
-  }
-
-  block(user, bool) {
 
 
-    let params;
+    ionViewWillEnter() {
+        this.api.pageName = 'HomePage';
 
-    if (user.isAddBlackListed == false && bool == true) {
+        this.events.subscribe('logo:click', () => {
 
-      user.isAddBlackListed = true;
-
-
-      params = {
-        list: 'Favorite',
-        action: 'delete'
-      };
-
-    } else if (user.isAddBlackListed == true && bool == false) {
-
-      user.isAddBlackListed = false;
-
-      params = {
-        list: 'BlackList',
-        action: 'delete'
-      };
-    }
-
-    if (this.users.length == 1) {
-      this.user_counter = 0;
-    }
-
-    // Remove user from list
-    this.users.splice(this.users.indexOf(user), 1);
-    this.events.publish('statistics:updated');
-
-
-    this.api.http.post('/api' + this.api.url + '/api/v2/lists/' + user.id, params, this.api.setHeaders(true)).subscribe((data:any) => {
-        this.api.toastCreate(data.success, 2500);
-    });
-  }
-
-  addFavorites(user, bool = false) {
-
-    if (user.isAddFavorite == false) {
-      user.isAddFavorite = true;
-
-      var params = JSON.stringify({
-        list: 'Favorite'
-      });
-    } else {
-        user.isAddFavorite = false;
-        var params  = JSON.stringify({
-            list: 'Favorite',
-            action: 'delete'
+            if(this.params.filter == 'new') {
+                this.content.scrollToTop(200);
+            } else {
+                this.blocked_img = false;
+                this.params = {
+                    action: 'search',
+                    filter: 'new', page: 1,
+                    list: ''
+                };
+                this.router.navigate(['/home', this.params]);
+                this.params_str = JSON.stringify(this.params);
+                this.getUsers();
+            }
         });
     }
 
-
-    if ( bool ) {
-        this.users.splice(this.users.indexOf(user), 1);
+    ionViewWillLeave() {
+        this.events.unsubscribe('logo:click');
     }
-      this.api.http.post(this.api.url + '/api/v2/lists/' + user.id, params, this.api.setHeaders(true)).subscribe((data:any) => {
-          this.api.toastCreate(data.success, 2500);
-        this.events.publish('statistics:updated');
-      });
 
-  }
+    itemTapped(user) {
+        console.log(user);
+        if (this.scrolling == false) {
+             let navigationExtras: NavigationExtras = {
+                 queryParams: {
+                     data: JSON.stringify({
+                         user: user
+                     })
+                 }
+             }
 
-  sortBy() {
-    this.params.filter = this.filter;
-    this.params.page = 1;
-    this.params_str = JSON.stringify(this.params);
-    this.content.scrollToTop(500);
-    this.getUsers();
-  }
-
-  getUsers() {
-     this.api.showLoad();
-      this.api.http.post(this.api.url + '/api/v2/users/results',  this.params_str, this.api.setHeaders(true)).subscribe((data:any) => {
-          console.log(data);
-        this.users = data.users;
-        this.texts = data.texts;
-
-        this.user_counter = data.users.length;
-        this.form_filter = data.filters;
-        this.filter = data.filter;
-        if (data.users.length < 10) {
-          this.loader = false;
+             this.router.navigate(['/profile'], navigationExtras);
         }
-      });
-    this.api.hideLoad();
-  }
+    }
 
-  getLocation() {
+    filterStatus() {
+        this.options.filter = this.options.filter === 1 ? 0 : 1;
+    }
 
-     this.geolocation.getCurrentPosition().then(pos => {
-     });
+    toDialog(user) {
+        this.api.data['user'] = user;
+        this.router.navigate(['/dialog']);
+    }
 
-  }
+    addLike(user) {
 
-  moreUsers(event) {
-    if (this.loader) {
-        this.page_counter++;
-        this.params.page = this.page_counter;
-        this.params_str = JSON.stringify(this.params);
+        if (user.isAddLike == false) {
 
-        this.api.http.post(this.api.url + '/api/v2/users/results', this.params_str, this.api.setHeaders(true)).subscribe((data:any) => {
-            console.log('user data');
+            user.isAddLike = true;
+            this.api.toastCreate(' עשית לייק ל' + user.username, 2500);
+
+            let params = JSON.stringify({
+                toUser: user.id,
+            });
+
+            this.api.http.post(this.api.url + '/api/v2/likes/' + user.id, params, this.api.setHeaders(true, this.username, this.password)).subscribe(data => {
+            }, err => {
+            });
+        } else {
+
+        }
+    }
+
+    block(user, bool) {
+
+
+        let params;
+
+        if (user.isAddBlackListed == false && bool == true) {
+
+            user.isAddBlackListed = true;
+
+
+            params = {
+                list: 'Favorite',
+                action: 'delete'
+            };
+
+        } else if (user.isAddBlackListed == true && bool == false) {
+
+            user.isAddBlackListed = false;
+
+            params = {
+                list: 'BlackList',
+                action: 'delete'
+            };
+        }
+
+        if (this.users.length == 1) {
+            this.user_counter = 0;
+        }
+
+        // Remove user from list
+        this.users.splice(this.users.indexOf(user), 1);
+        this.events.publish('statistics:updated');
+
+
+        this.api.http.post(this.api.url + '/api/v2/lists/' + user.id, params, this.api.setHeaders(true)).subscribe((data: any) => {
+            this.api.toastCreate(data.success, 2500);
             console.log(data);
+            this.loader = data.users.length >= 9 ? true : false;
+            this.params.page = 1;
+        });
+    }
+
+    addFavorites(user, bool = false) {
+
+        if (user.isAddFavorite == false) {
+            user.isAddFavorite = true;
+
+            var params = JSON.stringify({
+                list: 'Favorite'
+            });
+        } else {
+            user.isAddFavorite = false;
+            var params = JSON.stringify({
+                list: 'Favorite',
+                action: 'delete'
+            });
+        }
+
+
+        if (bool) {
+            this.users.splice(this.users.indexOf(user), 1);
+        }
+        this.api.http.post(this.api.url + '/api/v2/lists/' + user.id, params, this.api.setHeaders(true)).subscribe((data: any) => {
+            this.api.toastCreate(data.success, 2500);
+            this.events.publish('statistics:updated');
+        });
+
+    }
+
+
+    ClickSortInput() {
+        this.clicked = true;
+    }
+
+    sortBy() {
+        this.params.filter = this.filter;
+        this.api.data['filter'] = this.filter;
+        this.loader = this.users.length < 10 ? false : true;
+        this.params.page = 1;
+        this.params_str = JSON.stringify(this.params);
+        console.log('in sirtby');
+        if (this.clicked) {
+            this.content.scrollToTop(500);
+            console.log('users run from sort');
+           //alert('clickes');
+            this.getUsers();
+            this.clicked = false;
+        }
+
+    }
+
+    getUsers(fromSubscribe = false) {
+     //   alert('in get');
+
+
+        this.splashScreen.hide();
+        if( !this.api.back ) {
+            this.api.showLoad();
+
+        this.api.http.post(this.api.url + '/api/v2/users/results', this.params_str, this.api.header).subscribe((data: any) => {
+            console.log(data);
+
+            this.users = data.users;
+            this.texts = data.texts;
+
+            this.user_counter = data.users.length;
+            this.form_filter = data.filters;
+            this.filter = data.filter;
             if (data.users.length < 10) {
                 this.loader = false;
             }
-            for (let person of data.users) {
-                this.users.push(person);
-            }
-        });
-      event.target.complete();
+            this.api.hideLoad();
+            this.content.scrollToTop(0);
+        }), err => this.api.hideLoad();
+
+        } else {
+            this.api.hideLoad();
+        }
+
+
+
+        setTimeout(() => {
+          this.api.hideLoad()
+        }, 5000)
+
     }
-}
+
+    getLocation() {
+
+        this.geolocation.getCurrentPosition().then(pos => {
+        });
+
+    }
 
 
-  onScroll(event) {
-    this.scrolling = true;
-    $('.my-invisible-overlay').show();
+    moreUsers(event) {
+        console.log('more users run');
+        // this.content.scrollToTop(0);
+        if (this.loader) {
+            this.params.page++;
+            if (!this.params.page) this.params.page = 2;
+            this.params_str = JSON.stringify(this.params);
+            this.api.http.post(this.api.url + '/api/v2/users/results', this.params_str, this.api.setHeaders(true)).subscribe((data: any) => {
+                console.log('user data');
+                console.log(data);
+                if (data.users.length < 10) {
+                    this.loader = false;
+                }
+
+                for (let person of data.users) {
+                    this.users.push(person);
+                }
+            });
+        }
+        event.target.complete();
+    }
+
+
+    onScroll(event) {
+        this.scrolling = true;
+        $('.my-invisible-overlay').show();
+    }
+
+
+    endscroll(event) {
+        console.log('in end scroll');
+        // this.moreUsers();
+        var that = this;
+        setTimeout(function () {
+            $('.my-invisible-overlay').hide();
+            that.scrolling = false;
+        }, 4000);
+
+    }
+
+
 
   }
-
-  endscroll(event) {
-    var that = this;
-    setTimeout(function () {
-      $('.my-invisible-overlay').hide();
-      that.scrolling = false;
-    }, 4000);
-
-  }
-
-  ionViewWillEnter() {
-      this.api.pageName = 'LoginPage';
-  }
-}

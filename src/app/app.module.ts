@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 
-import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
+import { IonicModule, IonicRouteStrategy} from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 
@@ -17,14 +17,20 @@ import { LoadingController } from '@ionic/angular';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import {Push} from "@ionic-native/push/ngx";
 import {FileTransfer} from "@ionic-native/file-transfer/ngx";
+import { HttpModule } from "@angular/http";
+import {ImagePicker} from "@ionic-native/image-picker/ngx";
 
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    HttpModule,
     BrowserModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({
+      animated: false,
+
+    }),
     AppRoutingModule,
     HttpClientModule,
     IonicStorageModule.forRoot(),
@@ -39,6 +45,7 @@ import {FileTransfer} from "@ionic-native/file-transfer/ngx";
     Market,
     FileTransfer,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    ImagePicker,
   ],
   bootstrap: [AppComponent]
 })

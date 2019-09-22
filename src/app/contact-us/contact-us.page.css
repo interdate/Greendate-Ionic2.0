@@ -22,7 +22,7 @@ ion-item ion-input .item-inner {
   border: none; }
 
 ion-list {
-  background-color: #f0f0f0; }
+  background-color: #DBDBD2; }
 
 .border-red {
   border: 2px solid red; }
@@ -31,5 +31,9 @@ ion-list {
   position: relative;
   bottom: 11px;
   right: 27px; }
+
+ion-button {
+  width: 90%;
+  margin: 0 4.5%; }
 
 /*# sourceMappingURL=contact-us.page.css.map */

@@ -27,3 +27,25 @@ ion-content {
   margin-bottom: 5px;
   border-radius: 50%;
 }
+
+.swiper-container-android .swiper-slide, .swiper-wrapper {
+  -webkit-transform: translateZ(0);
+  margin: auto;
+  transform: translateZ(0);
+}
+
+ion-slides {
+  height: 100%;
+}
+
+.swiper-wrapper {
+  height: 100%;
+}
+
+.swiper-slide img {
+  margin-bottom:19%;
+}
+
+ion-slide {
+  direction: ltr
+}

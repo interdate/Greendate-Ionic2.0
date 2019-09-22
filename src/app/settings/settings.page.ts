@@ -7,7 +7,8 @@ import { ApiQuery } from '../api.service';
  */
 @Component({
   selector: 'page-settings',
-  templateUrl: 'settings.page.html'
+  templateUrl: 'settings.page.html',
+  styleUrls: ['settings.page.scss']
 })
 export class SettingsPage implements OnInit {
 
@@ -33,8 +34,9 @@ export class SettingsPage implements OnInit {
       is_sent_push:    this.form.is_sent_push.value
     });
 
-   this.api.http.post(this.api.url+'/api/v1/settings',params,this.api.setHeaders(true)).subscribe(data => {
-      console.log("Dialogs: ",data);
+   this.api.http.post(this.api.url+'/api/v1/settings',params,this.api.setHeaders(true)).subscribe((data: any) => {
+     console.log("Dialogs: ",data);
+     this.api.toastCreate(data.success, 2500);
     },err => {
       console.log("Oops!");
     });

@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
+import {ToastController} from '@ionic/angular';
 import {ApiQuery} from '../api.service';
-import {Router} from "@angular/router";
-import { Keyboard } from '@ionic-native/keyboard/ngx';
-import * as $ from 'jquery';
 import {Location} from "@angular/common";
-import {Validators, FormControl, FormGroup} from "@angular/forms";
+
+declare var $: any;
+
 
 /*
  Generated class for the ContactUs page.
@@ -12,105 +12,120 @@ import {Validators, FormControl, FormGroup} from "@angular/forms";
  Ionic pages and navigation.
  */
 @Component({
-  selector: 'page-contact-us', 
-  templateUrl: 'contact-us.page.html',
-  styleUrls: ['contact-us.page.scss'],
-  providers: [Keyboard]
+    selector: 'page-contact-us',
+    templateUrl: 'contact-us.page.html',
+    styleUrls: ['contact-us.page.scss']
 })
-export class ContactUsPage implements OnInit{
+export class ContactUsPage {
 
-  form:any =  {username: {}, subject: {}, email: {}, _token: {}, text: {}};
+    form: any = {};
+    errors: any = {};
+    user_id: any;
+    allfields = '';
+    public logged_in = false;
 
-  errors: any = {};
-
-  email_err: any;
-  user_id: any;
-  text_err: any;
-  subject_err: any;
-  allfields = '';
-  public logged_in = false;
-
-  constructor(public api: ApiQuery,
-              public router: Router,
-              public keyboard: Keyboard,
-              public navLocation: Location) {}
+    constructor(public api: ApiQuery,
+                public navLocation: Location,
+                public toastCtrl: ToastController) {
 
 
-  ngOnInit() {
-    this.api.pageName = 'ContactUsPage';
+        this.api.http.get(api.url + '/open_api/v2/contact', api.header).subscribe((data:any) => {
+            this.form = data.form;
+            console.log(this.form)
 
-    this.api.storage.get('user_data').then(data => {
-      if(data.user_id) {
-        this.user_id = data.user_id;
-        this.logged_in = true;
-      }
-    });
+        }, err => {
+            console.log("Oops!");
+        });
 
-    this.api.http.get(this.api.url + '/app_dev.php/open_api/contact', this.api.header).subscribe((data:any) => {
-      this.form = data.form;
-      console.log(data);
-    }, err => {
-      console.log("Oops!");
-    });
-
-  }
+        this.api.storage.get('user_data').then(data => {
+            if(data.user_id) {
+                this.user_id = data.user_id;
+                this.logged_in = true;
+            }
+        });
 
 
-
-  formSubmit() {
-    let isValid = true;
-    if (this.form.email.value.trim().length < 6 && !this.logged_in) {
-      this.errors.email = 'כתובת אימייל לא תקינה';
-      isValid = false;
-    }
-    if( this.form.subject.value.trim() == '' ) {
-      this.errors.subject = 'נא להזין נושא פנייה';
-      isValid = false;
-    }
-    if (this.form.text.value.trim() == '' ){
-      this.errors.text = 'נה להזין הודעה';
-      isValid = false;
     }
 
-    if (isValid) {
-      var params = JSON.stringify({
-        contact: {
-          email: this.user_id ? this.user_id : this.form.form.email.value,
-          text: this.form.text.value,
-          subject: this.form.subject.value,
-          _token: this.form._token.value,
+    onOpenKeyboard() {
+        $('.footerMenu').hide();
+    }
+
+    onHideKeyboard() {
+        $('.footerMenu').show();
+    }
+
+    formSubmit() {
+
+        let isValid = true;
+        if (this.form.email.value.trim().length < 7 && !this.logged_in) {
+            this.errors.email = 'כתובת אימייל לא תקינה';
+            isValid = false;
         }
-      });
+        if (this.form.subject.value.trim() == '') {
+            this.errors.subject = 'נא להזין נושא פניה';
+            isValid = false;
+        }
+        if ( this.form.text.value.trim() == '') {
+            this.errors.text = 'נא להזין הודעה';
+            isValid = false;
+        }
 
-      this.api.http.post(this.api.url + '/open_api/contacts', params, this.api.header).subscribe(data => this.validate(data));
+        if (isValid) {
+            var params ={
+                contact: {
+                    email: this.user_id ? this.user_id : this.form.email.value,
+                    text: this.form.text.value,
+                    subject: this.form.subject.value
+                    //_token: this.form._token.value,
+                }
+            };
+
+            this.api.http.post(this.api.url + '/open_api/v2/contacts', params, this.api.header).subscribe(data => this.validate(data));
+        }
+
     }
 
+    validate(response) {
+        this.errors.email= response.errors.form.children.email.errors;
+        this.errors.subject = response.errors.form.children.subject.errors;
+        this.errors.text = response.errors.form.children.text.errors;
+
+        if (response.send == true) {
+
+            this.form.email.value = "";
+            this.form.text.value = "";
+            this.form.subject.value = "";
+
+            this.toastCtrl.create({
+                message: 'ההודעה נשלחה בהצלחה',
+                showCloseButton: true,
+                closeButtonText: 'אישור'
+            }).then(toast => toast.present());
+        } else if(!this.errors){
+            this.allfields = 'ooops!';
+        }
     }
 
 
-
-  back() {
-    this.keyboard.hide();
-    this.navLocation.back();
-    setTimeout(function () {
-      $('.scroll-content, .fixed-content').css({'margin-bottom': '57px'});
-    }, 500);
-  }
-
-  validate(response) {
-    this.errors.email= response.errors.form.children.email.errors;
-    this.errors.subject = response.errors.form.children.subject.errors;
-    this.errors.text = response.errors.form.children.text.errors;
-
-    if (response.send == true) {
-
-      this.form.form.email.value = "";
-      this.form.form.text.value = "";
-      this.form.form.subject.value = "";
-
-       this.api.toastCreate('ההודעה נשלחה בהצלחה');
+    back() {
+        this.navLocation.back();
+        setTimeout(function () {
+            $('.scroll-content, .fixed-content').css({'margin-bottom': '57px'});
+        }, 500);
     }
-  }
 
+
+    ionViewWillEnter() {
+        this.api.pageName = 'ContactUsPage';
+        window.addEventListener('keyboardWillShow', this.onOpenKeyboard);
+        window.addEventListener('keyboardWillHide', this.onHideKeyboard);
+      //  alert(this.api.pageName);
+    }
+
+    ionViewWillLeave() {
+        window.removeEventListener('keyboardWillShow', this.onOpenKeyboard);
+        window.removeEventListener('keyboardWillHide', this.onHideKeyboard);
+    }
 
 }

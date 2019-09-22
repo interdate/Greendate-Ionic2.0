@@ -22,13 +22,13 @@
       Notifications
     </button>
 </div>-->
-  <ion-slides ng-if="true" freeMode="true" loop="true" #slider (ionSlideReachStart)="slideChanged($event)" >
-    <ion-slide  *ngFor="let user of users">
+  <ion-slides ng-if="true" freeMode="true" loop="true" #slider  (ionSlideDidChange)="slideChanged($event)" class="ion-slides" >
+    <ion-slide  *ngFor="let user of renderUsers" class="ion-slide">
 
-      <ion-card *ngIf="user?.image">
+      <ion-card *ngIf="user?.image" class="ion-card">
         <div class="clr"></div>
         <div class="pop_title"><span (click)="toProfile()">{{user?.username}},</span> {{user?.age}} {{user?.area}}</div>
-        <div class="avatar" [ngStyle]="{ 'background-image': 'url(' + user?.image + ')'}"></div>
+        <div class="avatar" [ngStyle]="{ 'background-image': 'url(' + user?.image + '.jpg)'}"></div>
       </ion-card>
     </ion-slide>
 
@@ -39,10 +39,3 @@
     <img src="../../assets/img/icons/thumbgreen.png" id="heart-green" (click)="goToSlide('like')">
   </div>
 </ion-content>
-<ion-footer>
-
-  <ion-toolbar>
-    <ion-title></ion-title>
-  </ion-toolbar>
-
-</ion-footer>

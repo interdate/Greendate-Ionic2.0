@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import { HTTP } from '@ionic-native/http/ngx';
 import {ApiQuery} from '../api.service';
 
 import * as $ from 'jquery'
@@ -13,24 +12,19 @@ import * as $ from 'jquery'
   selector: 'page-change-password',
   templateUrl: 'change-password.page.html',
   styleUrls: ['change-password.page.scss'],
-  providers: [HTTP]
+ // providers: [HTTP]
 })
 export class ChangePasswordPage {
 
-  form: { form: any } = {form: {oldPassword: {}, password: {second: {}, first: {}}, email: {}, _token: {}, text: {}}};
-username = 'vita@interdate-ltd.co.il';
-  password = '1111111';
+  form: any = {};
   oldPassword: any;
   first_pass: any;
   second_pass: any;
 
-  constructor(public api: ApiQuery,
-              public http: HTTP
-                ) {
+  constructor(public api: ApiQuery) {
 
-    this.api.http.post(api.url + '/api/v2/passwords', '', api.header).subscribe((data:any) => {
-      this.form = data;
-      console.log(data);
+    this.api.http.post(api.url + '/api/v2/passwords', {}, api.header).subscribe((data:any) => {
+      this.form = data.form;
     }, err => {
       console.log("Oops!");
     });
@@ -40,32 +34,32 @@ username = 'vita@interdate-ltd.co.il';
     this.oldPassword = this.first_pass = this.second_pass ='';
     console.log(form);
     let isValid = true;
-    if (this.form.form.oldPassword.value.length < 7) {
-      this.oldPassword = 'סיסמה ישנה לא נכונה';
+    if (this.form.oldPassword.value.length < 7) {
+      this.oldPassword = 'סיסמה ישנה שגויה';
       isValid = false;
     }
-    if (this.form.form.password.first.value.length < 7) {
+    if (this.form.password.first.value.length < 7) {
       this.first_pass = 'הסיסמה החדשה צריכה להכיל לפחות 7 תווים';
       isValid = false;
     }
-    if ( this.form.form.password.second.value !== this.form.form.password.first.value) {
+    if ( this.form.password.second.value !== this.form.password.first.value) {
       this.second_pass = 'סיסמאות לא תואמות';
       isValid = false;
     }
     if (isValid) {
 
 
-      var params = JSON.stringify({
+      var params ={
         changePassword: {
-          _token: this.form.form._token.value,
-          oldPassword: this.form.form.oldPassword.value,
+         // _token: this.form._token.value,
+          oldPassword: this.form.oldPassword.value,
           password: {
-            first: this.form.form.password.first.value,
-            second: this.form.form.password.second.value
+            first: this.form.password.first.value,
+            second: this.form.password.second.value
           },
 
         }
-      });
+      };
 
       //
       // const headers = {
@@ -77,7 +71,7 @@ username = 'vita@interdate-ltd.co.il';
       // };
 
 
-      this.http.post(this.api.url + '/api/v2/passwords', params, this.api.header).then(data=>console.log(data));
+      this.api.http.post(this.api.url + '/api/v2/passwords', params, this.api.header).subscribe(data => this.validate(data));
     }
   }
 
@@ -91,23 +85,39 @@ username = 'vita@interdate-ltd.co.il';
 
     if (response.changed == true) {
 
-      this.api.setStorageData({label: 'password', value: this.form.form.password.first.value});
-      this.api.setHeaders(true, '', this.form.form.password.first.value);
+      this.api.storage.get('user_data').then(data => {
+        data.password = this.form.password.first.value;
+        this.api.storage.set('user_data', data);
+      });
+      this.api.setHeaders(true, '', this.form.password.first.value);
 
-      this.form.form.password.first.value = "";
-      this.form.form.password.second.value = "";
-      this.form.form.oldPassword.value = "";
+      this.form.password.first.value = "";
+      this.form.password.second.value = "";
+      this.form.oldPassword.value = "";
 
   this.api.toastCreate('סיסמה עודכנה בהצלחה');
     } else {
-      this.form.form = response.form;
+      this.form = response.form;
     }
   }
 
+  onOpenKeyboard() {
+    $('.footerMenu').hide();
+  }
 
+  onHideKeyboard() {
+    $('.footerMenu').show();
+  }
 
   ionViewWillEnter() {
     this.api.pageName = 'ChangePasswordPage';
     console.log(this.api.pageName);
+    window.addEventListener('keyboardWillShow', this.onOpenKeyboard);
+    window.addEventListener('keyboardWillHide', this.onHideKeyboard);
+  }
+
+  ionViewWillLeave() {
+    window.removeEventListener('keyboardWillShow', this.onOpenKeyboard);
+    window.removeEventListener('keyboardWillHide', this.onHideKeyboard);
   }
 }

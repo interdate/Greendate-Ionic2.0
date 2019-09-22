@@ -6,8 +6,8 @@
 
 .delete-dialog-icon {
     position: absolute;
-    left: 4px;
-    bottom: -19px;
+  bottom: 5px;
+  right: 7px;
 }
 
 .date {
@@ -17,7 +17,10 @@
 .name {
   font-size: 16px;
 }
-
+.container {
+  height:calc(100% - 60px);
+  overflow: auto;
+}
 .ion-cart {
   border-radius: 0px;
    background-color: white;
@@ -27,4 +30,12 @@
 .counter {
   top: 0;
   rihgt: 0;
+}
+
+ion-card-content {
+  padding: 10px;
+}
+
+ion-content {
+  dislay: flex;
 }

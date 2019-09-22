@@ -23,7 +23,7 @@ export class NotificationsPage implements OnInit{
 
   ngOnInit() {
     this.api.pageName = 'NotificationsPage';
-    this.api.http.post(this.api.url+'/api/v1/notifications.json',{},this.api.setHeaders(true)).subscribe((data:any) => {
+    this.api.http.post(this.api.url+'/api/v2/notifications.json',{},this.api.setHeaders(true)).subscribe((data:any) => {
       this.users = data.users;
       this.texts = data.texts;
       console.log("Features: ",data);
@@ -35,7 +35,7 @@ export class NotificationsPage implements OnInit{
   toDialog(user) {
     let user_id = user.user_id;
     let bingo = user.bingo;
-   this.api.http.post(this.api.url+'/api/v1/notifications.json',{id: user.id},this.api.setHeaders(true)).subscribe((data:any) => {
+   this.api.http.post(this.api.url+'/api/v2/notifications.json',{id: user.id},this.api.setHeaders(true)).subscribe((data:any) => {
 
       this.users = data.users;
 

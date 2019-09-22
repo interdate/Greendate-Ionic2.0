@@ -10,14 +10,15 @@
     text-align: center;
     font-size: 10px;
     color: #666;
-    top: -6px;
-    left: -38px;
+    top: -7px;
+    left: -39px;
   }
 
 
 
   .other-msg {
     float: left;
+    background-color: white;
   }
 
   .toolbar-ios {
@@ -31,19 +32,29 @@
     height: auto;
   }
 
-  .v-ios-icon {
-    font-size: 2.9rem;
-    position: absolute;
-    top: -4px;
-  }
+
 
   ion-textarea {
     width: 74%;
-    height: 55px;
+    height: 40px;
     float: left;
+    background-color: #fff;
+    border-radius: 5px;
+    margin: 3px 7px;
+    padding: 0 5px;
+
   }
   .send-msg {
-    float: right;
+    position: absolute;
+    top: 2px;
+    right: 7.5px;
+    height: 44px;
+  }
+
+  .date-col {
+    position: absolute;
+    top: 4px;
+    right: 49px;
   }
 
   .item-md, .item-ios {
@@ -78,15 +89,23 @@
   }
 
   .messages ion-card:not(.other-msg) {
-    background-color: #a29878;
+    background-color: #A29878;
     float: right;
     border-radius: 0;
     box-shadow: 0px 2px 6px -2px;
   }
 
+  ion-toolbar{
+    padding: 0;
+    margin: 0;
+    height: 55px;
+  }
+
   .messages {
+    margin: 0 auto -33px;
     width: 84%;
-    margin:auto;
+  //  height: calc(100% - 148px);
+    overflow: auto;
   }
   .item-md ion-avatar[item-left], .item-md ion-thumbnail[item-left],
   .item-ios ion-avatar[item-left], .item-ios ion-thumbnail[item-left] {
@@ -104,27 +123,78 @@
   */
 
   .v-ios-icon{
-    font-size: 2.9rem;
+    font-size: 1.8rem;
     position: absolute;
-    top: 0px;
-    left: 13px;
+    bottom: 0px;
+    left: 27px;
   }
-.trash-icon {
-  position: relative;
-  top: 17px;
-  left: -18px;
-}
+  .trash-icon {
+    position: absolute;
+    left: 7px;
+    bottom: 4px;
+  }
 
-ion-cart {
-  border-radius: 0;
-  width: 85%;
-  
-}
+  ion-cart {
+    border-radius: 0;
+    width: 85%;
+  }
 
 .msg-item {
   width: 90%;
   border-radius: 0px;
   padding: 0px 4px 0 17px;
   margin:1px 0px 18px 0;
-  height: 39px;
+
+}
+ion-toolbar {
+  z-index:1000;
+}
+
+
+.ios {
+  //.messages {
+  //  width: 84%;
+  //  margin: 0 auto 42px;
+  //  overflow: auto;
+  //  max-height: calc( 100% - 147px );
+  //}
+}
+
+.back-btn {
+  top: 114px;
+}
+
+
+#form-dialog {
+  --background: #ccc;
+  position: fixed;
+  bottom: 0;
+}
+
+
+  scroll-content {
+    position:relative;
+  }
+
+
+ion-content {
+  display: flex;
+}
+
+.ios {
+  @media  screen and (max-width: 320px) {
+    .date {
+      text-align: center;
+      font-size: 10px;
+      color: #666;
+      top: -6px;
+      left: -26px;
+    }
+  }
+  .v-ios-icon {
+    font-size: 1.8rem;
+    position: absolute;
+    bottom: -3px;
+    left: 18px;
+  }
 }

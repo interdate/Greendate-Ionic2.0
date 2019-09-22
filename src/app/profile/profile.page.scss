@@ -66,9 +66,13 @@
     text-align: center;
   }
 
+  //ion-toolbar ion-button {
+  //  display: contents;
+  //}
+  
   .pmtitle.bottom {
     text-align: center;
-    padding: 4px 10px 14px 10px;
+    padding: 4px 10px 17px;
   }
 
   .pmtitle.bottom span ion-icon {
@@ -142,18 +146,55 @@
     margin-top: 1%;
   }
 
+  ion-item {
+    width: 90%;
+    margin: 10px auto;
+    border-radius: 8px;
+  }
+
   ion-textarea > textarea {
     text-align: center;
   }
 
-  .back-btn{
-    line-height: 47px;
-    padding-left: 1px;
-    width: 38px;
-    height: 38px;
+  ion-slides {
+    --bullet-background: red;
+    --bullet-background-active: red;
+    direction: ltr
   }
-
   .back-btn ion-icon {
     font-size: 22px;
   }
 
+  .abuse-form {
+    padding-bottom: 23px;
+  }
+
+  ion-content {
+    display: flex;
+  }
+
+
+  .avatar {
+    margin-top: 56px;
+  }
+
+  .ios {
+
+      .photos {
+        margin-top:76px;
+      }
+
+
+
+      .avatar {
+        margin-top: 1px;
+      }
+
+  }
+
+
+  .ios-btns {
+    .profile-buttons {
+      top: 84px;
+    }
+  }

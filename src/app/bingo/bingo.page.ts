@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { ApiQuery } from '../api.service';
 import {Router} from "@angular/router";
+import {Location} from "@angular/common";
 
 
 /*
@@ -19,12 +20,14 @@ export class BingoPage implements OnInit{
 
   constructor(
       public router:Router,
-      public api: ApiQuery) {}
+      public api: ApiQuery,
+      public navLocation: Location) {}
 
 
   ngOnInit (){
     this.api.pageName = 'BingoPage';
     this.data = this.api.data['data'];
+    console.log(this.data);
     this.data.texts.text = this.data.texts.text.replace('USERNAME',this.data.user.username);
   }
 
@@ -36,14 +39,13 @@ export class BingoPage implements OnInit{
 
   goBack() {
    // this.navCtrl.pop();
+    this.navLocation.back();
   }
 
   ionViewWillEnter() {
 
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad BingoPage');
-  }
+
 
 }

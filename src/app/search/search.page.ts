@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import { AdvancedSearchPage } from '../advanced-search/advanced-search.page';
 import { HomePage } from '../home/home.page';
 import { ApiQuery } from '../api.service';
 import {Router, NavigationExtras} from "@angular/router";
 import {SelectModalPage} from "../select-modal/select-modal.page";
 import {ModalController} from "@ionic/angular";
+import {IonContent} from "@ionic/angular";
 
 declare var $:any;
 
@@ -19,6 +20,8 @@ declare var $:any;
   styleUrls: ['./search.page.scss']
 })
 export class SearchPage {
+
+  @ViewChild(IonContent) content: IonContent;
 
   usersChooses: any = {};
 
@@ -72,6 +75,27 @@ export class SearchPage {
     },err => {
       console.log("Oops!");
     });
+
+    window.addEventListener('keyboardWillShow', this.onKeyboardShow);
+    window.addEventListener('keyboardWillHide', this.onKeyboardHide);
+
+  }
+
+  onKeyboardShow() {
+    $('.footerMenu').hide();
+    $('.search-container').css({
+      'max-height': 'calc(100% + 70px)'
+    });
+    setTimeout(()=>{
+      this.content.scrollToBottom(100);
+    }, 300);
+  }
+
+  onKeyboardHide() {
+    $('.search-container').css({
+      'max-height': 'calc(100% - 60px)'
+    });
+    $('.footerMenu').show();
   }
 
   SeachForm1(search_type) {
@@ -159,6 +183,9 @@ export class SearchPage {
     }
   }
 
+  showFooter() {
+    $('.footerMenu').show();
+  }
 
 
   toAdvancedPage() {
@@ -168,4 +195,11 @@ export class SearchPage {
   ionViewWillEnter() {
     this.api.pageName = 'SearchPage';
   }
+
+  ionViewWillLeave() {
+    $('.footerMenu').show();
+    window.removeEventListener('keyboardWillShow', this.onKeyboardShow);
+    window.removeEventListener('keyboardWillHide', this.onKeyboardHide);
+  }
+
 }

@@ -40,7 +40,7 @@ export class FaqPage {
 
 
       /**
-       *  pass in hightlightStatus a view status of each question by default (false)
+       *  set to hightlightStatus a view status of each question by default (false)
        *
        */
       for(let qa of this.page) {

@@ -30,7 +30,7 @@ export class PagePage {
 
     this.api.http.get(api.url + id, this.api.setHeaders(false)).subscribe((data:any) => {
       this.page = data.page;
-      console.log(this.page.title);
+     // alert(this.page.title);
 
     }, err => {
       console.log("Oops!");

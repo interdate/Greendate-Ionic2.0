@@ -12,3 +12,12 @@ h2 {
   font-size: 15px;
 
 }
+
+.faq {
+  height: calc(100% - 67px);
+  overflow: auto;
+}
+
+ion-content {
+  display: flex;
+}

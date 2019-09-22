@@ -1,9 +1,17 @@
 <ion-header>
-  <ion-toolbar class="toolbar-color"  >
+  <ion-toolbar class="toolbar-color" >
+    <div class="social">
+      <div class="instagram">
+        <a target="_blank" href="https://www.instagram.com/greendate.co.il"> <ion-icon name="logo-instagram"></ion-icon> </a>
+      </div>
+      <div class="facebook">
+        <a target="_blank" href="https://www.facebook.com/greendate.co.il"><img src="https://m.zigzug.co.il/images/facebook1.png"></a>
+      </div>
+    </div>
     <ion-menu-toggle class="menuToggle" menuToggle="right">
       <ion-icon  id="menu"></ion-icon>
     </ion-menu-toggle>
-    <button (click)="navigateHome()" class="logo"><img src="../assets/img/icons/logo.png" alt="sugardaddy"></button>
+    <div (click)="navigateHome()" class="logo"><img src="../assets/img/icons/logo.png" alt="sugardaddy"></div>
   </ion-toolbar>
 </ion-header>
 
@@ -12,12 +20,12 @@
 *****************************          start menu 1     ***********************************************************
 *******************************************************************************************************************
 -->
-<ion-menu side="end" auto-hide="true"  type="overlay"  class="side-menu {{api.username == 'noname' ? 'menu1logout' : 'hydrated menu-enabled'}}" menuId="menu1" id="menu1" color="dark">
+<ion-menu side="end" auto-hide="true"  type="overlay"  class="side-menu " [ngClass]="{'menu1logout': this.api.username == 'noname' || this.api.username == 'null' }" menuId="menu1" id="menu1" color="dark">
 
   <ion-content>
     <ion-list class="menu-conatiner" color="dark">
 
-      <div class="menu-profle-block" *ngIf="api.username != 'noname'">
+      <div class="menu-profle-block" *ngIf="api.username != 'noname' && api.username != 'null'" >
         <ion-icon class="settings" name="settings" (click)="menu2Active()"></ion-icon>
         <div (click)="openPage(menu_items_settings[1])" class="profile"
              *ngIf="avatar == '/images/no_photo_2.jpg' || avatar == '/images/no_photo_1.jpg'"
@@ -36,7 +44,7 @@
         <span class="menu-text">{{menu_item.title}}</span>
         <ion-icon slot="start" class="contact-arrow" *ngIf="menu_item._id == 'stats'" ios="ios-arrow-back"
                   md="ios-arrow-back"></ion-icon>
-        <ion-badge *ngIf="is_login && menu_item.count != 0" item-right>{{ menu_item.count }}</ion-badge>
+        <ion-badge slot="end" *ngIf="is_login && menu_item.count != 0">{{ menu_item.count }}</ion-badge>
       </div>
     </ion-list>
   </ion-content>
@@ -103,9 +111,7 @@
 </a>
 
 
-<ion-router-outlet main></ion-router-outlet>
-
-
+<ion-router-outlet main [swipeGesture]="false"></ion-router-outlet>
 
 <ion-footer *ngIf="is_login" (swipe)="swipeFooterMenu()">
   <div *ngIf="new_message && new_message.is_not_sent_today == true" class="messageNotify">
@@ -119,7 +125,7 @@
       <div class="text">{{ message.newMessagesText }}</div>
     </div>
   </div>
-  <div class="footerMenu" position="bottom">
+  <div class="footerMenu" position="bottom" *ngIf="api.username != 'noname' && api.username != 'null'">
     <div class="footer-menu">
       <ul class="menu-one">
         <li (click)="swipeFooterMenu()" class="more-btn menu-left">

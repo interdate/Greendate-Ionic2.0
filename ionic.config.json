@@ -1,13 +1,14 @@
 {
   "name": "Greendate",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
-  "type": "angular",
   "proxies": [
     {
       "path": "/",
       "proxyUrl": "https://www.greendate.co.il"
     }
-  ]
+  ],
+  "type": "angular"
 }

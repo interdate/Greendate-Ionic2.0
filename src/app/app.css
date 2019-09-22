@@ -17,6 +17,10 @@ footer {
 header {
   z-index: 3; }
 
+.menu-item ion-badge {
+  position: absolute;
+  left: 25px; }
+
 .new-background-color {
   --background: black !important; }
 
@@ -26,46 +30,23 @@ header {
   position: absolute;
   display: block; }
 
-/*.item-block{
-  width: auto;
-}*/
-.item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner {
-  border-bottom-color: transparent;
-  box-shadow: none; }
-
-.list-ios > .item-block:first-child {
-  border-top: 0; }
-
-button .button-inner {
-  text-transform: uppercase; }
-
-.swiper-pagination-bullet-active {
-  background: #000; }
-
-.action-sheet-group .action-sheet-sub-title {
-  text-align: center; }
-
-ion-menu .item-md [item-right] {
-  margin: 15px 5px 0px 0; }
-
-.searchbar-md .searchbar-input {
-  padding: 6px 10px; }
-
-.searchbar-md .searchbar-search-icon {
-  background: none; }
-
 .back-btn {
   position: fixed;
-  z-index: 999999;
+  display: block !important;
+  z-index: 999;
   border-radius: 50%;
   background: rgba(233, 232, 229, 0.5);
-  width: 31px;
-  height: 30px;
+  width: 42px;
+  height: 42px;
   text-align: center;
-  line-height: 30px;
-  top: 70px;
-  right: 11px;
+  line-height: 45px;
+  top: 74px;
+  right: 9px;
+  font-size: 27px;
   border: 1px solid rgba(1, 1, 1, 0.5); }
+
+.ios .back-btn {
+  top: 84px; }
 
 .username {
   color: #ccc;
@@ -74,152 +55,14 @@ ion-menu .item-md [item-right] {
   margin-bottom: 15px;
   margin-bottom: 15px; }
 
-.no_results {
-  text-align: center;
-  margin-top: 20px;
-  font-size: 18px; }
-
-.item-ios [item-right] {
-  margin: 22px 8px 4px 8px; }
-
-ion-range.range-md.range-has-pin, ion-range.range-ios.range-has-pin {
-  padding-top: 10px; }
-
-.settings {
-  font-size: 25px;
-  color: white;
-  float: left;
-  margin-left: 12px;
-  clear: both; }
-
-.infinite-loading-spinner {
-  display: none; }
-
-ion-card.grey {
-  background-color: #ccc; }
-
-ion-infinite-scroll {
-  clear: both; }
-
-.age-label {
-  flex: initial !important; }
-
-.border-top {
-  border-top: 0.55px solid #c8c7cc; }
-
-.item-input .label-md, .item-select .label-md,
-.item-datetime .label-md, .item-input .label-ios,
-.item-select .label-ios, .item-datetime .label-ios {
-  color: #000; }
-
 .menu-item ion-badge {
   color: #000;
   background-color: white;
-  border-radius: 3px;
-  margin-left: 25px; }
+  border-radius: 3px; }
 
 .menu-profle-block {
-  margin-top: 45px; }
-
-.disabled {
-  opacity: 0.5; }
-
-.statistics {
-  float: right;
-  color: #fff;
-  line-height: 30px; }
-
-.text-input-ios {
-  width: 100%; }
-
-.err {
-  font-size: 12px;
-  color: red; }
-
-.num {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  color: #fff;
-  font-size: 25px;
-  font-weight: bold; }
-
-.photo ion-card {
+  margin-top: 45px;
   position: relative; }
-
-.list-md, .list-ios {
-  margin-left: 15px;
-  margin-right: 15px; }
-
-#menu3 .list-ios {
-  margin-left: 8px;
-  margin-right: -4px; }
-
-.list-ios {
-  margin-top: 32px; }
-
-#menu1 .contact-arrow {
-  margin-right: 10px; }
-
-#menu2 .list-md, #menu2 .list-ios {
-  margin-top: 20px; }
-
-.list-md .item-block .item-inner, .list-ios .item-block .item-inner {
-  border: 0; }
-
-.side-menu .badge-md, .side-menu .badge-ios {
-  background-color: #ff2061; }
-
-.side-menu ion-icon {
-  margin-right: 20px;
-  margin-left: 5px;
-  font-size: 1.7em; }
-
-.profile-buttons {
-  position: fixed;
-  top: 70px;
-  left: 10px;
-  z-index: 9999; }
-
-.platform-ios .profile-buttons, .platform-ios .back-btn {
-  top: 80px; }
-
-textarea.text-input {
-  background: white;
-  border-radius: 5px;
-  margin: 0; }
-
-input.text-input-md, input.text-input-ios {
-  padding: 8px;
-  border-radius: 5px;
-  background: white; }
-
-textarea.text-input-ios, textarea.text-input-md {
-  padding: 8px; }
-
-*::-webkit-input-placeholder {
-  color: #000 !important; }
-
-*:-moz-placeholder {
-  color: #000 !important; }
-
-*:-ms-input-placeholder {
-  /* IE10+ */
-  color: #000 !important; }
-
-.profile {
-  background: url(https://nyrichdate.com/media/photos/358/219-face.png);
-  background-size: cover;
-  background-color: #fff;
-  background-position: center;
-  background-repeat: no-repeat;
-  height: 120px;
-  width: 120px;
-  border-radius: 50%;
-  margin: 0 auto;
-  border: 5px solid #363e48;
-  margin-top: -35px;
-  margin-bottom: 10px; }
 
 #the_area {
   background: url(../assets/img/icons/the-arena.png) center no-repeat;
@@ -316,17 +159,9 @@ textarea.text-input-ios, textarea.text-input-md {
   text-align: center;
   margin: auto; }
 
-#online {
-  background: url(../assets/img/icons/online.png) center no-repeat;
-  width: 24px;
-  height: 22px;
-  background-size: contain; }
-
-.side-menu ion-icon {
-  color: #fff; }
-
 ion-content {
-  --background: #f0f0f0; }
+  --background: #DBDBD2;
+  display: flex; }
 
 .toolbar-color {
   --background: #000000; }
@@ -334,40 +169,41 @@ ion-content {
 .toolbar-background-md, .toolbar-background-ios {
   --background: --ion-color-black; }
 
-.toolbar-background {
-  --background: black !important; }
-
-.toolbar-background-ios {
-  height: 73%;
-  margin-top: 5.7%; }
-
-.md ion-menu .menu-inner .item-md, .ios ion-menu .menu-inner .item-ios {
-  background: #39393f;
-  color: #87909a; }
-
-.md ion-menu .menu-inner .content-md, .ios ion-menu .menu-inner .content-ios {
-  background: #39393f; }
-
-ion-menu ion-icon.ion-md-lock,
-ion-menu ion-icon.ion-ios-lock {
-  margin-right: 25px;
-  font-size: 24px; }
-
 #menu {
   background: url(../assets/img/icons/menuicon1.png) center no-repeat;
   width: 30px;
   height: 30px;
   background-size: cover; }
 
-ion-header button {
-  background-color: black; }
-
 .logo {
   width: 200px;
   margin: auto;
-  /* padding-top: 18px;*/
   display: block;
-  height: 100%; }
+  height: 100%;
+  --background: transparent; }
+
+.social {
+  position: absolute;
+  left: 0px; }
+  .social .facebook {
+    float: left;
+    margin: 6px auto; }
+  .social .instagram {
+    float: left;
+    margin: 3.5px 3px; }
+  .social .instagram ion-icon {
+    height: 34px;
+    width: 34px;
+    color: white; }
+  .social .facebook {
+    margin-left: 4px;
+    margin-right: 0; }
+  .social img {
+    width: 29px;
+    height: 29px; }
+
+.logo:focus {
+  border: none; }
 
 .footer-menu ul li.more-btn.menu-right {
   border-right: 0;
@@ -400,43 +236,6 @@ ion-header button {
 .menu-one li, .menu-two li {
   margin: 0;
   padding: 0; }
-
-.my-invisible-overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-  top: 0;
-  left: 0;
-  display: none; }
-
-/*#livesearch{
-  position: absolute;
-  top: 61px;
-  z-index: 2;
-  width: 96%;
-  right: 7px;
-  overflow: scroll;
-  background-color: white;
-  height: 106%;
-  border: 1px solid #A5ACB2;
-}*/
-#livesearch {
-  position: absolute;
-  top: 76px;
-  z-index: 1000;
-  width: 96%;
-  right: 7px;
-  overflow: scroll;
-  background-color: white;
-  height: 106%;
-  border: 1px solid #A5ACB2;
-  margin: 0; }
-
-.suggestion {
-  background-color: lightgray;
-  padding-right: 16px;
-  padding-left: 0px; }
 
 .menu-two {
   margin-left: -100%;
@@ -532,19 +331,22 @@ ion-header button {
 
 .footer-menu ul li {
   float: left;
-  width: 23% !important;
+  width: 18%;
   font-size: 0.8em;
   text-align: center;
   position: relative; }
 
+.menu-one li {
+  margin: 0 0 0 6px; }
+
 .footer-menu .menu-two li {
   margin-left: 7%;
-  width: 18% !important;
+  width: 18%;
   height: 55px;
   font-size: 12px; }
 
 .footer-menu ul li img.online {
-  width: 38px;
+  width: 38px !important;
   margin-bottom: 1.5px; }
 
 .footer-menu ul li img {
@@ -572,7 +374,7 @@ ion-header button {
   box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.75);
   box-sizing: border-box; }
 
-ion-footer.footer.footer-md * {
+ion-footer.footer.footer-md *, ion-footer.footer.footer-ios * {
   overflow: visible !important; }
 
 ion-footer {
@@ -629,8 +431,8 @@ button.item-ios:not([detail-none]) .item-inner {
 
 .settings {
   position: absolute;
-  top: 10px;
-  left: 15px; }
+  top: 0;
+  left: 11px; }
 
 .footer-menu ul {
   padding-top: 5px;
@@ -641,10 +443,11 @@ button.item-ios:not([detail-none]) .item-inner {
   background-color: #4e4e4f;
   margin: 0 0 !important;
   height: 100%;
-  overflow: auto; }
+  overflow: auto;
+  padding: 10% 0; }
 
 .menu-back-btn {
-  margin: 30px 100% 19px 20px; }
+  margin: 5px 100% 19px 20px; }
 
 #menu1 .contact-arrow {
   position: relative;
@@ -670,7 +473,9 @@ button.item-ios:not([detail-none]) .item-inner {
   z-index: 9999;
   float: left;
   border-left: 0;
-  border-right: 1px solid #fff; }
+  border-right: 1px solid #fff;
+  position: relative;
+  left: 1px; }
 
 .clear-both {
   clear: both; }
@@ -692,75 +497,43 @@ button.item-ios:not([detail-none]) .item-inner {
 
 .footer-menu ul li.more-btn.menu-left {
   border-right: 0;
-  border-left: 1px solid #fff; }
+  border-left: 1px solid #fff;
+  position: relative;
+  right: 1px; }
 
 .footer-menu ion-icon {
   display: block; }
 
-/*
-ion-header .toolbar-ios {
-  padding-top: 18px;
-}
-*/
-ion-header .toolbar-ios {
-  height: 70px; }
+ion-button {
+  height: 35px;
+  font-size: 14px; }
 
 ion-footer.footer-md::before,
 ion-footer.footer-ios::before {
   background-image: none; }
 
-@media (max-width: 375px) {
-  .footer-menu .menu-two li {
-    margin-left: 7%;
-    width: 20% !important; }
-
-  .footer-menu .menu-two .search-width {
-    width: 11% !important; } }
-@media (max-width: 320px) {
-  .ios ion-menu .menu-inner {
-    top: 69px; }
-
-  .footer-menu ul li {
-    font-size: 0.7em; } }
-.my-invisible-overlay {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-  top: 0;
-  left: 0;
-  display: none; }
-
-/*#livesearch{
-  position: absolute;
-  top: 61px;
-  z-index: 2;
-  width: 96%;
-  right: 7px;
-  overflow: scroll;
-  background-color: white;
-  height: 106%;
-  border: 1px solid #A5ACB2;
-}*/
-#livesearch {
-  position: absolute;
-  top: 76px;
-  z-index: 1000;
-  width: 96%;
-  right: 7px;
-  overflow: scroll;
-  background-color: white;
-  height: 106%;
-  border: 1px solid #A5ACB2;
-  margin: 0; }
-
-.suggestion {
-  background-color: lightgray;
-  padding-right: 16px;
-  padding-left: 0px; }
-
 /********/
 .content {
   margin-bottom: 50px; }
+
+@media screen and (max-width: 320px) {
+  .social {
+    left: -3px; }
+    .social .instagram {
+      float: left;
+      margin: 8px 0px 0px 2px; }
+    .social .instagram a ion-icon {
+      width: 28px;
+      height: 28px; }
+    .social .facebook {
+      margin-left: 1px; }
+    .social .facebook a image {
+      width: 27px;
+      height: 27px; } }
+ion-footer {
+  max-height: 60px; }
+
+.online, .viewed, .near-me, .inbox {
+  width: 20% !important; }
 
 /*# sourceMappingURL=app.css.map */

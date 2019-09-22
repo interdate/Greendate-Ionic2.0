@@ -2,34 +2,38 @@ import {Component, ViewChild} from '@angular/core';
 import {
     Platform,
     AlertController,
-    Events
+    Events, IonRouterOutlet
 } from '@ionic/angular';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Push } from '@ionic-native/push/ngx';
+import { StatusBar} from '@ionic-native/status-bar/ngx';
+import { Push, PushOptions, PushObject } from '@ionic-native/push/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Market } from '@ionic-native/market/ngx';
 import {ApiQuery} from './api.service';
 import {MenuController} from '@ionic/angular';
 import * as $ from 'jquery';
-import {Router, NavigationEnd, NavigationExtras} from "@angular/router";
+import {Router, NavigationEnd, NavigationExtras, NavigationStart} from "@angular/router";
 import {IonNav} from "@ionic/angular";
-
+import {Location} from "@angular/common";
+//import {} from "@ionic-native/push";
+import { Keyboard } from '@ionic-native/keyboard/ngx';
+import {IonContent} from "@ionic/angular";
 
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   //providers: [Geolocation, MenuController, Push, Market, Nav, GestureController, TransitionController, DomController, AlertController, Events],
+  providers: [Keyboard],
 
 
 })
 export class AppComponent {
 
   @ViewChild(IonNav) nav: IonNav;
+  @ViewChild(IonRouterOutlet) routerOutlet: IonRouterOutlet;
+  @ViewChild(IonContent) content: IonContent;
 
-  // make HomePage the root (or first) page
-  rootPage: any;
   banner: any;
   menu_items_logout: any;
   menu_items_login: any;
@@ -44,7 +48,6 @@ export class AppComponent {
   username: any;
   back: string;
 
-
   is_login: any = false;
   status: any = '';
   texts: any = {};
@@ -54,6 +57,10 @@ export class AppComponent {
   stats: string = '';
   interval: any = true;
 
+
+  androidVesion = '1.0.1';
+  iosVersion = '1.0.0';
+
   constructor(public platform: Platform,
               public  menu: MenuController,
               public api: ApiQuery,
@@ -61,81 +68,124 @@ export class AppComponent {
               private geolocation: Geolocation,
               public alertCtrl: AlertController,
               public events: Events,
+              public navLocation: Location,
               public statusBar: StatusBar,
               public splashScreen: SplashScreen,
               public push: Push,
+              public keyboard: Keyboard,
               public market: Market) {
 
 
-
-    this.api.http.get(api.url + '/open_api/menu', {}).subscribe((data: any)=> {
-
+    this.api.http.get(api.url + '/open_api/v2/menu', {}).subscribe((data: any) => {
       this.initMenuItems(data.menu);
-
-      this.api.storage.get('user_data').then((val) => {
-        this.initPushNotification();
-        if (!val) {
-          this.menu_items = this.menu_items_logout;
-          this.router.navigate(['/login']);
-        } else {
-          this.router.navigate(['/home']);
-          this.menu_items = this.menu_items_login;
-          this.getBingo();
-          this.api.setHeaders(true, val.username, val.password);
-        }
-      });
-
     });
-
+    this.keyboard.hide();
+    this.api.storage.get('user_data').then((val) => {
+      this.initPushNotification();
+      if (!val) {
+        this.menu_items = this.menu_items_logout;
+        this.router.navigate(['/login']);
+      } else {
+        this.api.setHeaders(true, val.username, val.password);
+        this.menu_items = this.menu_items_login;
+        this.getBingo();
+        this.router.navigate(['/home']);
+      }
+    });
 
     this.closeMsg();
     var that = this;
     setInterval(function () {
-      let page = that.router.url;
-      if (page != '/login' && that.api.username === false && that.api.username === null) {
-        that.getBingo();
-        // New Message Notification
-        that.getMessage();
+      if (! (that.api.username == 'null' || that.api.username == 'noname' || that.api.username == false)) {
+           that.getBingo();
+           that.getMessage();
       }
-
     }, 10000);
 
     this.initializeApp();
     this.menu1Active(false);
-
+    this.setLocation();
   }
 
-  navigateHome() {
 
+  navigateHome() {
+    this.menuCloseAll();
+    this.api.back = false;
     let navigationExtras: NavigationExtras = {
       queryParams: {
         params: JSON.stringify({
           action: 'search',
-          filter: "lastActivity",
+          filter: "new",
+          page: '1'
         })
       }
     };
-    this.router.navigate(['/home'], navigationExtras);
+    this.menu.close().then(res => console.log(res));
+     if(this.api.pageName == 'HomePage') {
+       this.events.publish('logo:click');
+     } else {
+      this.router.navigate(['/home'], navigationExtras);
+    }
   }
 
+
+
+
+  initPushNotification() {
+
+    if (!this.platform.is('cordova')) {
+      console.log("Push notifications not initialized. Cordova is not available - Run in physical device");
+      return;
+    }
+    const options: PushOptions = {
+      android: {},
+      ios: {
+        alert: 'true',
+        badge: true,
+        sound: 'false'
+      },
+      windows: {},
+      browser: {
+        pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+      }
+    };
+    const push2: PushObject = this.push.init(options);
+    push2.on('registration').subscribe((data) => {
+      this.api.storage.set('deviceToken', data.registrationId);
+      this.api.sendPhoneId(data.registrationId);
+    });
+
+    push2.on('notification').subscribe((data: any) => {
+      if (data.additionalData.foreground == false) {
+        this.api.storage.get('user_data').then((val) => {
+          if (val) {
+            this.api.setHeaders(true, val.username, val.password);
+            this.api.data['user'] = {
+              id: data.additionalData.userFrom
+            };
+            this.router.navigate(['/dialog']);
+            this.new_message.is_not_sent_today = false;
+          } else {
+            this.router.navigate(['/login'])
+          }
+        });
+      }
+    });
+  }
 
   closeMsg() {
     this.new_message = '';
   }
 
-  /**
-   *  Set User's Current Location
-   */
-  setLocation() {
 
+  setLocation() {
     this.geolocation.getCurrentPosition().then(pos => {
       var params = JSON.stringify({
-        latitude: pos.coords.latitude,
-        longitude: pos.coords.longitude
+        latitude: pos.coords.latitude.toString(),
+        longitude: pos.coords.longitude.toString()
       });
 
-      this.api.http.post(this.api.url + '/api/v2/locations', params, this.api.setHeaders(true)).subscribe(data => {
-      });
+      this.api.http.post(this.api.url + '/api/v2/locations', params, this.api.setHeaders(true)).subscribe(data => {});
     });
   }
 
@@ -172,9 +222,7 @@ export class AppComponent {
 
   bannerStatus() {
 
-
     if (this.api.pageName == 'DialogPage' || this.api.pageName == 'EditProfilePage'
-        //   || this.api.pageName == 'SearchPage' || this.api.pageName == AdvancedSearchPage
         || this.api.pageName == 'Registration' || this.api.pageName == 'ArenaPage'
         || this.api.pageName == 'ChangePhotosPage' || this.api.pageName == 'ProfilePage' || this.is_login == false) {
       $('.link-banner').hide();
@@ -194,21 +242,13 @@ export class AppComponent {
   clearLocalStorage() {
     this.api.setHeaders(false, null, null);
     // Removing data storage
-    this.api.storage.remove('status');
-    this.api.storage.remove('password');
-    this.api.storage.remove('user_id');
-    this.api.storage.remove('user_photo');
-
-    // this.nav.push(LoginPage);
+    this.api.storage.remove('user_data');
     this.router.navigate(['/login']);
   }
 
   initMenuItems(menu) {
-
     this.back = menu.back;
-
     this.stats = menu.stats;
-
     this.menu_items_logout = [
       {_id: '', icon: 'log-in', title: menu.login, url: '/login', count: ''},
       {_id: 'blocked', icon: '', title: menu.forgot_password, url: '/password-recovery', count: ''},
@@ -242,10 +282,9 @@ export class AppComponent {
       {_id: 'change_password', icon: '', title: menu.change_password, url: '/change-password', count: ''},
       {_id: 'freeze_account', icon: '', title: menu.freeze_account, url: '/freeze-account', count: ''},
       {_id: 'settings', icon: 'cog', title: menu.settings, url: '/settings', count: ''},
-      {_id: '', icon: 'mail', title: menu.contact_us, url: '/contact', count: ''},
+      {_id: '', icon: 'mail', title: menu.contact_us, url: '/contact-us', count: ''},
       {_id: 'logout', icon: 'log-out', title: menu.log_out, url: '/login', count: ''}
     ];
-
 
     this.menu_items_contacts = [
       {_id: 'viewed', icon: '', title: menu.viewed, url: '/home', list: 'viewed', count: ''},
@@ -292,7 +331,7 @@ export class AppComponent {
       {_id: '', icon: 'lock', title: menu.blocked, url: '/home', list: 'black', count: ''}
 
     ];
-console.log(menu);
+
     this.menu_items_footer1 = [
       {
         _id: 'online',
@@ -366,7 +405,6 @@ console.log(menu);
 
 
   menu1Active(bool = true) {
-    console.log('menu1Active, bool = ' + bool)
     this.activeMenu = 'menu1';
     this.menu.enable(true, 'menu1');
     this.menu.enable(false, 'menu2');
@@ -402,7 +440,7 @@ console.log(menu);
       this.menu.enable(true, 'menu1');
       this.menu.enable(false, 'menu2');
       this.menu.enable(false, 'menu3');
-      this.menu.close();
+      this.menu.close().then(res => console.log(res));
       this.menu.toggle();
     }
   }
@@ -410,58 +448,15 @@ console.log(menu);
 
   initializeApp() {
     this.platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need
+      this.getAppVersion();
       this.statusBar.styleDefault();
-      this.splashScreen.hide();
+
+      //this.splashScreen.hide();
     });
   }
-
-
-  initPushNotification() {
-    //alert(123);
-    if (!this.platform.is('cordova')) {
-      console.warn("Push notifications not initialized. Cordova is not available - Run in physical device");
-      return;
-    }
-    let push = this.push.init({
-      android: {
-        senderID: "72562107329"
-      },
-      ios: {
-        alert: "true",
-        badge: false,
-        sound: "true"
-      },
-      windows: {}
-    });
-
-    push.on('registration').subscribe((data) => {
-      this.deviceToken = data.registrationId;
-      this.api.storage.set('deviceToken', data.registrationId);
-      this.api.sendPhoneId(data.registrationId);
-      //TODO - send device token to server
-    });
-
-    push.on('notification').subscribe((data) => {
-      let self = this;
-      //if user using app and push notification comes
-      if (data.additionalData.foreground == false) {
-        this.api.storage.get('user_id').then((val) => {
-          if (val) {
-            // self.nav.push(InboxPage);
-          } else {
-            //  this.nav.push(LoginPage);
-          }
-        });
-
-      }
-    });
-  }
-
 
   swipeFooterMenu() {
-    console.log('in swipe footer function');
+   // console.log('in swipe footer function');
     if ($('.more-btn').hasClass('menu-left')) {
       $('.more-btn').removeClass('menu-left');
       $('.more-btn .right-arrow').show();
@@ -480,14 +475,14 @@ console.log(menu);
     }
   }
 
-
   removeBackground() {
     $('#menu3, #menu2').find('ion-backdrop').remove();
   }
 
   getBanner() {
-    this.api.http.get(this.api.url + '/open_api/banner', this.api.header).subscribe((data:any) => {
+    this.api.http.get(this.api.url + '/open_api/v2/banner', this.api.header).subscribe((data:any) => {
       this.banner = data.banner;
+      console.log(this.banner);
     });
   }
 
@@ -495,7 +490,10 @@ console.log(menu);
     window.open(this.banner.link, '_blank');
     return false;
   }
+
   openPage(page) {
+
+    let params = '';
     var logout = false;
     if (page._id == 'logout') {
       this.status = '';
@@ -508,7 +506,7 @@ console.log(menu);
       // close the menu when clicking a link from the menu
       this.menu.close();
 
-      let params = '';
+
 
       // navigate to the new page if it is not the current page
       if (page.list == 'online') {
@@ -547,7 +545,6 @@ console.log(menu);
 
   getBingo() {
     this.api.storage.get('user_data').then((val) => {
-
       if (val) {
         this.api.http.get(this.api.url + '/app_dev.php/api/v2/bingo', this.api.setHeaders(true)).subscribe((data: any) => {
           this.api.storage.set('status', this.status);
@@ -561,10 +558,8 @@ console.log(menu);
             this.status = data.status;
           }
           if (data.user) {
-            // this.nav.push(BingoPage, {data: data});
-            this.api.data[data] = data.user;
+            this.api.data['data'] = data;
             this.router.navigate(['/bingo']);
-
             this.api.http.get(this.api.url + '/app_dev.php/api/v2/bingo?likeMeId=' + data.user.id, this.api.setHeaders(true)).subscribe(data => {
             });
           }
@@ -574,10 +569,10 @@ console.log(menu);
   }
 
   dialogPage() {
-    let user = {id: this.new_message.user_id};
+    console.log(this.new_message);
+    let user = {id: this.new_message.userId};
     this.closeMsg();
-    // this.nav.push(DialogPage, {user: user});
-   // this.api.data[user] = user;
+    this.api.data['user'] = user;
     this.router.navigate(['/dialog']);
   }
 
@@ -585,19 +580,24 @@ console.log(menu);
     this.api.http.get(this.api.url + '/api/v2/new/messages', this.api.setHeaders(true)).subscribe((data: any) => {
 
       if ((this.new_message == '' || typeof this.new_message == 'undefined') && !(this.api.pageName == 'DialogPage')) {
+
         this.new_message = data.messages[0];
         if (typeof this.new_message == 'object') {
           this.api.http.get(this.api.url + '/api/v2/messages/notify?message_id=' + this.new_message.id, this.api.setHeaders(true)).subscribe(data => {
+
           });
+
         }
       }
-
+      if(this.menu_items[0].count < data.newMessagesNumber) {
+        this.events.publish('messages:new', data);
+      }
       this.message = data;
-
       this.menu_items[2].count = data.newNotificationsNumber;
       this.menu_items[0].count = data.newMessagesNumber;
       this.menu_items_footer2[2].count = data.newNotificationsNumber;
       this.menu_items_footer1[3].count = data.newMessagesNumber;
+
     });
   }
 
@@ -606,18 +606,14 @@ console.log(menu);
         && !(this.api.pageName == 'PagePage')) {
       if (this.status == 'no_photo') {
 
-        if (this.texts.photoMessage) {
-          this.api.toastCreate(this.texts.photoMessage);
-        }
-
-        // this.nav.push(RegistrationFourPage);
+          if (this.texts.photoMessage) {
+            this.api.toastCreate(this.texts.photoMessage);
+          }
       } else if (this.status == 'not_activated') {
-        //  this.nav.push(ActivationPage);
-        //this.router.navigate(['/activate']);
+
       }
     }
     if (((this.api.pageName == 'ActivationPage') && this.status == 'login')) this.router.navigate(['/home']);
-
   }
 
   async alert(title, subTitle) {
@@ -630,7 +626,35 @@ console.log(menu);
   }
 
   getAppVersion() {
-    this.api.http.get(this.api.url + '/open_api/version', this.api.header).subscribe(data => {
+    this.api.http.get(this.api.url + '/open_api/v2/version', this.api.header).subscribe((data:any) => {
+
+      // if(this.platform.is('android') && data != this.androidVesion ) {
+      //   this.market.open('il.co.greendate');
+      // } else if(this.platform.is('ios') && data != this.iosVersion) {
+      //   this.market.open('il.co.greendate');
+      // }
+
+      if((this.platform.is('android') && data.android_version != this.androidVesion) || (this.platform.is('ios') && data.ios_version != this.iosVersion)) {
+        this.alertCtrl.create({
+          header: data.title,
+          message: data.message,
+
+          buttons: [
+            {
+              text: data.cancel,
+            },
+            {
+              text: data.update,
+              handler: res => {
+                this.market.open('il.co.greendate');
+              }
+            }
+            ]
+        }).then(alert => alert.present())
+      }
+
+
+
 
       // if (this.platform.is('cordova')) {
       //   this.appVersion.getVersionNumber().then((s) => {
@@ -646,125 +670,175 @@ console.log(menu);
 
 
   ngAfterViewInit(){
-
-    $('.footerMenu').show();
+    // this.keyboard.hide();
+    // $(window).resize();
     this.router.events.subscribe((val) => {
       if(val instanceof  NavigationEnd) {
-
-        console.log('after view init run');
+        $('.footerMenu').show();
         this.getBanner();
-        // this.getAppVersion();
+      ;
+        setTimeout(() => {
+          this.keyboard.hide();
+          setTimeout(() => {
+            $('ion-content').css({'height': '100%'});
+          }, 100);
+          setTimeout(() => {
+            $('ion-content').css({'height': '101%'});
+          }, 200);
+          setTimeout(() => {
+            $('ion-content').css({'height': '100%'});
+          }, 300);
 
+        }, 200);
         this.events.subscribe('statistics:updated', () => {
-          //alert('stat upd event');
-          // user and time are the same arguments passed in `events.publish(user, time)`
           this.getStatistics();
         });
 
+        // let that = this;
+        // window.addEventListener('native.keyboardshow', function () {
+        //   //alert(1);
+        //   $('.link-banner').hide();
+        //   $('.footerMenu, .back-btn').hide();
+        //   $('.back-btn').hide();
+        //
+        //
+        //   if (that.api.pageName == 'DialogPage') {
+        //     $('.banner').hide();
+        //
+        //     setTimeout(function () {
+        //       $('.scroll-content, .fixed-content').css({'margin-bottom': '57px'});
+        //       $('.form-dialog').css({'margin-bottom': '-20px'});
+        //     }, 200);
+        //   } else {
+        //     $('.banner').show();
+        //     setTimeout(function () {
+        //       $('ion-content').css({'margin-bottom': '0px'});
+        //     }, 200);
+        //
+        //   }
+        //
+        // });
 
-        if (this.api.pageName == 'HomePage') {
-          if (this.api.status != '') {
-            this.status = this.api.status;
-          }
-          this.setLocation();
-        }
+        // window.addEventListener('keyboardWillShow', () => {
+        //   $('.footerMenu').hide();
+        // });
+        //
+        // window.addEventListener('keyboardWillHide', () => {
+        //   if(this.api.pageName != 'DialogPage') {
+        //     $('.footerMenu').show();
+        //   }
+        // });
+    //
+    //     window.addEventListener('native.keyboardhide', function () {
+    //       //let page = el.nav.getActive();
+    //       //$('.footerMenu, .back-btn').show();
+    //         $('ion-content').css({'height': '100%'});
+    //       that.bannerStatus();
+    //       // that.keyboard.hide();
+    //       if (that.api.pageName == 'DialogPage') {
+    //         $('.back-btn').show();
+    //         $('.footerMenu').hide();
+    //         setTimeout(function () {
+    //           //$('.scroll-content, .fixed-content').css({'margin-bottom': '115px'});
+    //           $('.scroll-content, .fixed-content').css({'margin-bottom': '57px'});
+    // //          that.content.scrollTo(0, 999999, 300);
+    //         }, 600);
+    //       } else {
+    //         $('.footerMenu, .back-btn').show();
+    //         setTimeout(function () {
+    //           $('.scroll-content, .fixed-content').css({'margin-bottom': '0px'});
+    //         }, 500);
+    //       }
+    //
+    //     });
 
-        let el = this;
-        window.addEventListener('native.keyboardshow', function () {
+        // window.addEventListener('keyboardWillShow', () => {
+        //   let page = this.api.pageName;
+        //   $('.footerMenu').hide();
+        //   if(page == 'DialogPage'/* || page == 'LoginPage'*/ || page == 'ProfilePage' || page == 'SearchPage') {
+        //     setTimeout(()=>{
+        //       this.content.scrollToBottom(300);
+        //     }, 300);
+        //   }
+        //
+        // });
 
-          this.keyboard.disabledScroll(true);
+        // window.addEventListener('keyboardWillHide', () => {
+        //   $('footerMenu').show();
+        //   this.content.scrollToBottom(300);
+        //   $('.content').css({'margin-bottom': '50px', 'height': '101%'});
+        // });
 
-          $('.link-banner').hide();
-          $('.footerMenu, .back-btn').hide();
-          $('.back-btn').hide();
-
-
-          if (this.api.pageName == 'DialogPage') {
-            $('.banner').hide();
-
-            setTimeout(function () {
-              $('.scroll-content, .fixed-content').css({'margin-bottom': '57px'});
-              $('.form-dialog').css({'margin-bottom': '-20px'});
-            }, 200);
-          } else {
-            $('.banner').show();
-            setTimeout(function () {
-              $('.scroll-content, .fixed-content').css({'margin-bottom': '0px'});
-            }, 200);
-
-          }
-
-        });
-
-        window.addEventListener('native.keyboardhide', function () {
-
-          $('.footerMenu, .back-btn').show();
-
-          this.bannerStatus();
-
-          if (el.api.pageName == 'DialogPage') {
-            $('.back-btn').show();
-            $('.footerMenu').hide();
-            setTimeout(function () {
-              $('.scroll-content, .fixed-content').css({'margin-bottom': '115px'});
-              $('.scroll-content, .fixed-content').css({'margin-bottom': '57px'});
-              // el.content.scrollTo(0, 999999, 300);
-            }, 600);
-          } else {
-            $('.footerMenu, .back-btn').show();
-            setTimeout(function () {
-              $('.scroll-content, .fixed-content').css({'margin-bottom': '0px'});
-            }, 500);
-          }
-
-        });
-
-        if (el.api.pageName == 'LoginPage') {
-          clearInterval(this.interval);
-          this.interval = false;
-          this.avatar = '';
-        }
-        if (el.api.pageName == 'HomePage' && this.interval == false) {
+        if (this.api.pageName == 'HomePage' && this.interval == false) {
           $('.link-banner').show();
           this.interval = true;
           this.getBingo();
+        } else  if (this.api.pageName == 'HomePage') {
+          if (this.api.status != '') {
+            this.status = this.api.status;
+          }
+        } else if (this.api.pageName == 'LoginPage') {
+          clearInterval(this.interval);
+          this.interval = false;
+          this.avatar = '';
+          this.menu_items = this.menu_items_logout;
+          this.is_login = false
         }
 
-        this.api.setHeaders(true);
+
+        //this.api.setHeaders(true);
 
         this.api.storage.get('user_data').then((val) => {
-          if (this.status == '') {
-            this.status = val.status;
-          }
-          this.checkStatus();
-          if (!val.status) {
-            console.log('!val');
-            this.menu_items = this.menu_items_logout;
-            this.is_login = false
-          } else {
-            console.log('val');
-            this.is_login = true;
-            this.menu_items = this.menu_items_login;
-            this.getStatistics();
-          }
+          if (val) {
+            if (this.status == '') {
+              this.status = val.status;
+            }
+            this.checkStatus();
+            if (!val.status) {
+              this.menu_items = this.menu_items_logout;
+              this.is_login = false;
+              clearInterval(this.interval);
+              this.interval = false;
+            } else {
+              this.is_login = true;
+              this.menu_items = this.menu_items_login;
+              this.getStatistics();
+            }
 
-          if (el.api.pageName == 'HomePage') {
-            $('.link-banner').show();
-          }
 
-          if (el.api.pageName == 'LoginPage') {
-            $('.link-banner').hide();
-          }
-          this.bannerStatus();
+            if (this.api.pageName == 'HomePage') {
+              $('.link-banner').show();
+            } else if (this.api.pageName == 'LoginPage') {
+              $('.link-banner').hide();
+            }
+            this.bannerStatus();
 
+          }
         });
 
 
-      } //this.username = this.api.username;
-
-
+        setTimeout(()=>{
+          this.api.storage.get('user_data').then(val => {
+            if (!val){
+              if(this.api.pageName != 'PasswordRecoveryPage' && this.api.pageName != 'RegistrationPage' && this.api.pageName != 'PagePage' && this.api.pageName != 'ContactUsPage'){
+                this.router.navigate(['/login']);
+                this.is_login = false;
+                this.menu_items = this.menu_items_logout;
+                clearInterval(this.interval);
+              }
+            }
+          });
+        }, 900);
+      }
     });
-
-
   }
 }
+
+/*
+ INSERT INTO `users_animals`(`user_id`, `animal_id`)
+ SELECT
+ `id`, `animals_id`
+ FROM
+ `user`
+
+ */

@@ -32,7 +32,9 @@ ion-datetime {
   height: 40px;
   margin: 10px auto;
   width: 94%;
-  border-radius: 7px; }
+  border-radius: 7px;
+  padding: 8px 5px 8px 0 !important;
+  position: relative; }
 
 .native-input.sc-ion-input-ios {
   background-color: white;
@@ -40,25 +42,30 @@ ion-datetime {
   width: 100px;
   flex: 0; }
 
+.inner_form_top ul li {
+  list-style-type: none; }
+
 .steps ul {
   width: 83%;
   float: right; }
 
 .inner_form_top {
-  padding: 27px 0px 21px 8.5%;
+  padding: 12px 0 13px;
   border-bottom: 3px solid #fffefe; }
 
 .inner_form_top ul {
   display: block;
   overflow: hidden;
   margin: 10px auto;
-  width: 80%; }
+  padding: 0;
+  text-align: center;
+  direction: ltr; }
 
 .inner_form_top ul li {
   background: url(../../assets/img/innerformarrow.png) no-repeat right top;
-  float: left;
   margin: 0 10px 0 1px;
-  padding: 0 23px 0 0; }
+  padding: 0 23px 0 0;
+  display: inline-block; }
 
 .input.text ion-icon {
   position: absolute;
@@ -66,7 +73,10 @@ ion-datetime {
   top: 45px;
   right: 0; }
 
-.ion-input:before, ion-datetime:before, ion-searchbar:before {
+.text-login-fb {
+  text-align: center; }
+
+ion-input.ion-input:before, ion-datetime:before, ion-searchbar:before, ion-select:before {
   content: "edit";
   background: url("../../assets/img/edit.png") no-repeat;
   background-size: 50% auto;
@@ -77,7 +87,23 @@ ion-datetime {
   font-size: 0px;
   top: 0px;
   left: 0px;
-  z-index: 999; }
+  z-index: 999;
+  background-color: #fff;
+  border-radius: 20%; }
+
+div.ion-input:before {
+  content: "edit";
+  background: url("../../assets/img/edit.png") no-repeat;
+  background-size: 50% auto;
+  background-position: center;
+  width: 50px;
+  height: 100%;
+  position: absolute;
+  font-size: 0px;
+  top: 0px;
+  left: 0px;
+  z-index: 999;
+  border-radius: 20%; }
 
 div.yellow-border {
   border: 2px #ffcd00 solid; }
@@ -128,7 +154,7 @@ textarea {
   float: left;
   width: 87%;
   margin: 0;
-  margin-top: 12px; }
+  margin-bottom: 10px; }
 
 .input.agree {
   width: 12%; }
@@ -194,8 +220,48 @@ ion-list.search {
 .input.agree .item.item-md .checkbox-md {
   margin: 0; }
 
+.border-red {
+  border: 2px solid red; }
+
+.err {
+  position: relative;
+  bottom: 8px;
+  right: 20px; }
+
+.bottom-err {
+  position: relative;
+  bottom: 10px;
+  right: 42px;
+  font-size: 15px;
+  color: red; }
+
+.textarea {
+  background-color: #fff;
+  margin: 10px auto;
+  width: 94%;
+  border-radius: 7px;
+  padding: 10px !important; }
+
+ion-content {
+  display: flex; }
+
+ion-datetime {
+  text-align: right; }
+
+.alert-checkbox-label.sc-ion-alert-md {
+  padding: 0 !important; }
+
+ion-checkbox {
+  --padding-start: 0 !important;
+  --padding-end: 0 !important; }
+
 @media (max-width: 320px) {
   .input.agree {
     width: 13%; } }
+.errAll {
+  bottom: 0px;
+  right: 11px;
+  margin-top: 10px;
+  padding: 3px; }
 
 /*# sourceMappingURL=registration.page.css.map */

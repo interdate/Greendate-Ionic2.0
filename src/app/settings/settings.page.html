@@ -12,16 +12,16 @@
 </ion-header>
 
 
-<ion-content padding>
-  <ion-item danger>
+<ion-content>
+  <div class="ion-item">
     <ion-label> {{ form.is_sent_email.label }} </ion-label>
-    <ion-toggle [(ngModel)]="form.is_sent_email.value" color="danger" checked="false"></ion-toggle>
-  </ion-item>
-  <ion-item>
+    <ion-toggle slot="start" [(ngModel)]="form.is_sent_email.value" color="danger" checked="false"></ion-toggle>
+  </div>
+  <div class="ion-item border-top">
     <ion-label> {{ form.is_sent_push.label }} </ion-label>
-    <ion-toggle [(ngModel)]="form.is_sent_push.value" color="danger" checked="false"></ion-toggle>
-  </ion-item>
-  <ion-item class="border-top">
-    <ion-button expand="full" color="danger" (click)="submit()">{{ form.submit }}</ion-button>
-  </ion-item>
+    <ion-toggle slot="start" [(ngModel)]="form.is_sent_push.value" color="danger" checked="false"></ion-toggle>
+  </div>
+  <div class="border-top">
+    <ion-button expand="block" color="danger"  (click)="submit()">{{ form.submit }}</ion-button>
+  </div>
 </ion-content>

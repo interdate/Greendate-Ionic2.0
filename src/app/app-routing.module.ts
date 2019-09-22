@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-
+  //{path: '', redirectTo: '/home',  pathMatch: 'full'},
   { path: 'login', loadChildren: './login/login.module#LoginPageModule' },
   { path: 'password-recovery', loadChildren: './password-recovery/password-recovery.module#PasswordRecoveryPageModule' },
   { path: 'home', loadChildren: './home/home.module#HomePageModule' },
@@ -26,9 +26,9 @@ const routes: Routes = [
   { path: 'item-details', loadChildren: './item-details/item-details.module#ItemDetailsPageModule' },
   { path: 'change-photos', loadChildren: './change-photos/change-photos.module#ChangePhotosPageModule' },
   { path: 'change-password', loadChildren: './change-password/change-password.module#ChangePasswordPageModule' },
-
-  /*
   { path: 'edit-profile', loadChildren: './edit-profile/edit-profile.module#EditProfilePageModule' },
+  /*
+
    { path: 'activation', loadChildren: './activation/activation.module#ActivationPageModule' },
 
    */

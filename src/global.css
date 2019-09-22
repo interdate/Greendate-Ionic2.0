@@ -8,22 +8,6 @@
 @import url(~@ionic/angular/css/text-alignment.css);
 @import url(~@ionic/angular/css/text-transformation.css);
 @import url(~@ionic/angular/css/flex-utils.css);
-.banner {
-  position: absolute;
-  bottom: 65px;
-  z-index: 9;
-  width: 80%;
-  right: 10%; }
-
-.new-background-color {
-  --background: black !important; }
-
-.my-custom-modal-css .modal-wrapper {
-  height: 20%;
-  top: 80%;
-  position: absolute;
-  display: block; }
-
 /*.item-block{
   width: auto;
 }*/
@@ -36,9 +20,6 @@
 
 button .button-inner {
   text-transform: uppercase; }
-
-.swiper-pagination-bullet-active {
-  background: #000; }
 
 .action-sheet-group .action-sheet-sub-title {
   text-align: center; }
@@ -64,11 +45,6 @@ ion-menu .item-md [item-right] {
   top: 70px;
   right: 11px;
   border: 1px solid rgba(1, 1, 1, 0.5); }
-
-.username {
-  color: #ccc;
-  text-align: center;
-  font-size: 16px; }
 
 .no_results {
   text-align: center;
@@ -164,7 +140,7 @@ ion-infinite-scroll {
 
 .profile-buttons {
   position: fixed;
-  top: 70px;
+  top: 82px;
   left: 10px;
   z-index: 9999; }
 
@@ -357,10 +333,6 @@ ion-header button {
   background: #010100; }
 
 /* Mobile Footer */
-.menu-one, .menu-two {
-  bottom: 5px;
-  background: #010100; }
-
 .menu-one {
   position: relative;
   width: 100%;
@@ -375,17 +347,6 @@ ion-header button {
   left: 0;
   display: none; }
 
-/*#livesearch{
-  position: absolute;
-  top: 61px;
-  z-index: 2;
-  width: 96%;
-  right: 7px;
-  overflow: scroll;
-  background-color: white;
-  height: 106%;
-  border: 1px solid #A5ACB2;
-}*/
 .menuToggle {
   position: absolute;
   right: 14px;
@@ -500,16 +461,13 @@ ion-header button {
 .footer-menu {
   color: #fff; }
 
-.footer-menu ul li {
-  float: left;
-  width: 23% !important;
-  font-size: 0.8em;
-  text-align: center;
-  position: relative; }
+.inbox img {
+  max-height: 33px;
+  width: 56% !important; }
 
-.footer-menu .menu-two li {
-  margin-left: 7%;
-  width: 18% !important; }
+.viewed img {
+  max-height: 33px !important;
+  width: 33% !important; }
 
 .footer-menu ul li img.online {
   width: 38px;
@@ -542,9 +500,6 @@ ion-header button {
 
 ion-footer.footer.footer-md * {
   overflow: visible !important; }
-
-ion-footer {
-  background: #000; }
 
 ion-item.item-md, ion-item.item-ios {
   background-color: #dbdbd2;
@@ -598,15 +553,6 @@ button.item-ios:not([detail-none]) .item-inner {
   margin-top: 0;
   margin-bottom: 0; }
 
-.footer-menu ul li.more-btn {
-  height: 60px;
-  margin: -5px 0 -10px;
-  width: 8% !important;
-  z-index: 9999;
-  float: left;
-  border-left: 0;
-  border-right: 1px solid #fff; }
-
 .footer-menu ul li.more-btn ion-icon {
   font-size: 28px;
   margin-top: 10px; }
@@ -629,11 +575,6 @@ button.item-ios:not([detail-none]) .item-inner {
 .footer-menu ion-icon {
   display: block; }
 
-/*
-ion-header .toolbar-ios {
-  padding-top: 18px;
-}
-*/
 ion-header .toolbar-ios {
   height: 70px; }
 

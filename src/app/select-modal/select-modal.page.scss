@@ -24,12 +24,28 @@ ion-item.item{
   text-align: center;
 
 }
+
 .toolbar-title {
-
   text-align: center;
-
 }
 
 .border-top {
   padding: 18px 5px 7px 0px;
+}
+
+ion-searchbar {
+  background-color: #000;
+}
+
+.searchbar-input {
+  border-radius: 3px;
+  background-color: #fff!important;
+  --background: #fff;
+}
+
+.searchbar-input.sc-ion-searchbar-ios {
+  --background: #fff;
+}
+.segment-button-indicator {
+  background-color: #fff !important;
 }

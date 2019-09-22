@@ -15,44 +15,50 @@
   <ion-icon name="ios-arrow-forward"></ion-icon>
 </div>
 
-<ion-content id="content" [scrollEvents]="true">
+<ion-content #content [scrollEvents]="true">
   <!--<div class="no_results" *ngIf="messages">{{ texts?.no_results }}</div>-->
   <ion-card>
     <ion-list lines="none">
     <ion-item>
       <!--<ion-avatar (click)="toProfilePage()" item-left>
       </ion-avatar>-->
-      <p class="dialog-avatar" *ngIf="texts?.photo != ''" (click)="toProfilePage()" [ngStyle]="{ 'background-image': 'url(' + texts?.photo + ')'}">{{texts.a_conversation_with}} {{texts.name}}</p>
+      <p class="dialog-avatar" *ngIf="texts?.photo != ''" (click)="toProfilePage()" [ngStyle]="{ 'background-image': 'url(' + texts?.photo + '.jpg)'}">{{texts.a_conversation_with}} {{texts.name}}</p>
       <p class="dialog-avatar" *ngIf="texts.photo == ''" (click)="toProfilePage()" [ngStyle]="{ 'background-image': 'url(' + api.url + '/images/no_photo_' + user.gender + '.jpg' + ')'}">{{texts.a_conversation_with}} {{texts.name}}</p>
     </ion-item>
     </ion-list>
   </ion-card>
   <div class="messages">
-    <ion-card [ngClass]="{'other-msg': user.id == msg?.from }" *ngFor="let msg of messages" class="usr_msg msg-item">
+    <ion-card  *ngFor="let msg of messages; let i = index" [ngClass]="{'other-msg': user.id == msg?.from }" class="usr_msg msg-item">
       <ion-grid>
         <ion-row>
-          <ion-col width-57> <ion-card-content [innerHTML]="msg?.text" item-left>
-          </ion-card-content></ion-col>
-          <ion-col  width-23> <ion-card-content class="date" item-right>
+          <ion-col width-57>
+            <ion-card-content class="mtext" [innerHTML]="msg?.text" item-left>
+            <!--{{msg?.text}}-->
+          </ion-card-content>
+          </ion-col>
+
+          <ion-col  class="date-col"> <ion-card-content class="date" item-right>
             {{msg.dateTime}}
             <!--<ion-icon *ngIf="user?.id == msg.from" name="checkmark"></ion-icon>-->
-            <ion-icon *ngIf="user?.id != msg.from && !msg.isRead" name="done-all" class="v-ios-icon"></ion-icon>
-            <ion-icon color="danger" *ngIf="user?.id != msg.from && msg.isRead" name="done-all" class="v-ios-icon"></ion-icon>
 
-          </ion-card-content></ion-col>
-          <ion-icon *ngIf="user?.id != msg.from" class="trash-icon" (click)="deleteMessage(msg.id)" name="trash"></ion-icon>
+          </ion-card-content>
+          </ion-col>
         </ion-row>
       </ion-grid>
+      <ion-icon *ngIf="user?.id != msg.from && !msg.isRead && (msg.delivered === true || msg.delivered == undefine) " name="done-all" class="v-ios-icon"></ion-icon>
+      <ion-icon *ngIf="msg.delivered === false" name="checkmark" class="v-ios-icon"></ion-icon>
+      <ion-icon color="danger" *ngIf="user?.id != msg.from && msg.isRead" name="done-all" class="v-ios-icon"></ion-icon>
+      <ion-icon class="trash-icon" (click)="deleteMessage(msg, i)" name="trash"></ion-icon>
     </ion-card>
   </div>
 
-</ion-content>
-<ion-footer>
-  <ion-toolbar id="form-dialog">
-    <ion-textarea id="dialog-msg" [(ngModel)]="message" placeholder="" item-left></ion-textarea>
-    <ion-button class="send-msg" (click)="sendMessage()" color="danger">שלח</ion-button>
+
+  <ion-toolbar *ngIf="messages" id="form-dialog">
+    <ion-textarea  id="dialog-msg" [(ngModel)]="message" placeholder=""></ion-textarea>
+    <div class="clear-both"></div>
+    <ion-button class="send-msg"   (click)="sendMessage()" color="danger">שלח</ion-button>
   </ion-toolbar>
-
-
-
-</ion-footer>
+  <ion-infinite-scroll #scroll position="top"  threshold="60%" (ionInfinite)="moreMessages($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

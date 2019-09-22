@@ -1,16 +1,4 @@
-<!--<ion-header>-->
-  <!--<ion-toolbar>-->
-    <!--<ion-title>{{title}}</ion-title>-->
-  <!--</ion-toolbar>-->
-<!--</ion-header>-->
 
-<!--<ion-content>-->
-
-  <!--<ul *ngFor="let a of choices">-->
-    <!--<input type="radio" name="asd" [checked]="choseNow == a.label" (click)="choose(a)" > {{a.label}}-->
-  <!--</ul>-->
-
-<!--</ion-content>-->
 <ion-header>
 
   <ion-toolbar class="toolbar-color">
@@ -19,7 +7,7 @@
       <ion-button (click)="close()" side="end">סגור</ion-button>
     </ion-buttons>
   </ion-toolbar>
-  <ion-searchbar *ngIf="search" data-placeholder="חיפוש" (ionInput)="getItems($event)"></ion-searchbar>
+  <ion-searchbar color="light" *ngIf="search" data-placeholder="חיפוש" (ionInput)="getItems($event)"></ion-searchbar>
 </ion-header>
 
 <ion-content>
@@ -31,7 +19,7 @@
     </div>
 
 
-  <ion-infinite-scroll #scroll threshold="100px">
+  <ion-infinite-scroll #scroll  threshold="90%" (ionInfinite)="moreItems($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

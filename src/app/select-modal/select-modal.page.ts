@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ModalController} from "@ionic/angular";
 import {Location} from "@angular/common";
+import {IonInfiniteScroll} from "@ionic/angular";
 
 @Component({
   selector: 'app-select-modal',
@@ -9,14 +10,14 @@ import {Location} from "@angular/common";
 })
 export class SelectModalPage implements OnInit {
 
-
+  @ViewChild(IonInfiniteScroll) infiniteScroll: IonInfiniteScroll;
 
   constructor(
      public modalCtrl: ModalController,
-     public navLocation: Location
+     public navLocation: Location,
   ) { }
 
-  choices;
+  choices = [];
   title;
   choseNow;
   options: any = [];
@@ -24,17 +25,24 @@ export class SelectModalPage implements OnInit {
   count: any = 50;
   opt_add:any = true;
   search: any = false;
+  backBtn: any;
 
   ngOnInit() {
-    console.log(this.choices);
-    console.log(this.choseNow);
     this.addOption();
   }
 
 
   getItem(item) {
-    console.log(item);
     this.modalCtrl.dismiss(item);
+  }
+
+  moreItems(event) {
+    //alert(this.page);
+    this.page++;
+    this.addOption();
+    //setTimeout(() => {
+    event.target.complete();
+    //}, 1000);
   }
 
   close() {
@@ -90,4 +98,10 @@ export class SelectModalPage implements OnInit {
     }
   }
 
+  ionViewDidEnter() {
+
+    // document.addEventListener("backbutton",function(e) {
+    //   console.log("disable back button")
+    // }, false);
+  }
 }

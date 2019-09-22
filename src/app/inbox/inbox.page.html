@@ -14,29 +14,25 @@
 
 <ion-content padding>
   <div class="no_results" *ngIf="!users">{{ texts?.no_results }}</div>
-  <ion-card class="ion-cart" *ngFor="let user of users" (click)="toDialogPage(user)">
-    <ion-card-content >
-      <div class="usr_img" *ngIf="user.photoName" [ngStyle]="{ 'background-image': 'url('  + user.photoName + ')'}" ></div>
-      <div class="usr_img" *ngIf="user.noPhoto" [ngStyle]="{ 'background-image': 'url(' + api.url  + user.noPhoto + ')'}" ></div>
-      <ion-card-title>
-        <div class="name">{{ user.username }}</div>
-        <div class="date">{{ user.date}}</div>
-      </ion-card-title>
-      <div class="message">
-        <p>
-          {{ user.message }}
-        </p>
-        <div class="counter" *ngIf="user.newMessagesNumber > 0" >{{ user.newMessagesNumber }}</div>
-      </div>
-      <ion-icon class="delete-dialog-icon" (click)="deleteDialog(user.id)" name="trash"></ion-icon>
-    </ion-card-content>
-  </ion-card>
+    <div class="container">
+      <ion-card class="ion-cart" *ngFor="let user of users; let i = index">
+        <ion-card-content (click)="toDialogPage(user)">
+          <div class="usr_img" *ngIf="user.photoName" [ngStyle]="{ 'background-image': 'url('  + user.photoName + ')'}" ></div>
+          <div class="usr_img" *ngIf="user.noPhoto" [ngStyle]="{ 'background-image': 'url(' + api.url  + user.noPhoto + ')'}" ></div>
+          <ion-card-title>
+            <div class="name">{{ user.username }}</div>
+            <div class="date">{{ user.date}}</div>
+          </ion-card-title>
+          <div class="message">
+            <p>
+              {{ user.message }}
+            </p>
+            <div class="counter" *ngIf="user.newMessagesNumber > 0" >{{ user.newMessagesNumber }}</div>
+          </div>
+        </ion-card-content>
+        <ion-icon class="delete-dialog-icon" (click)="deleteDialog(user, i)" name="trash"></ion-icon>
+      </ion-card>
 
+    </div>
 </ion-content>
-<ion-footer>
 
-  <ion-toolbar>
-    <ion-title></ion-title>
-  </ion-toolbar>
-
-</ion-footer>

@@ -41,7 +41,7 @@ export class AdvancedSearchPage implements OnInit{
     this.api.pageName = 'AdvancedSearchPage';
 
     this.api.storage.get('searchParams').then(params => {
-      console.log(params);
+     // console.log(params);
       if (params) {
         this.fromCache = true;
         this.form = params.form;
@@ -50,7 +50,7 @@ export class AdvancedSearchPage implements OnInit{
       } else {
         this.fromCache = false;
         this.api.http.get( this.api.url + '/api/v2/search?advanced=1', this.api.setHeaders(true) ).subscribe(data => {
-          console.log(data);
+          //console.log(data);
           this.form = data;
           this.form.ageFrom.label = 'גיל מ';
           this.form.ageTo.label = 'גיל עד';
@@ -75,7 +75,7 @@ export class AdvancedSearchPage implements OnInit{
   }
   async openSelect2(field, fieldTitle) {
 
-    console.log(field);
+   // console.log(field);
     const modal = await this.modalCtrl.create({
       component: SelectModalPage,
       componentProps: {
@@ -87,11 +87,11 @@ export class AdvancedSearchPage implements OnInit{
     await modal.present();
 
     modal.onDidDismiss().then(data => {
-      console.log(data);
+     // console.log(data);
 
       this.form[fieldTitle].value = data.data.value;
       this.usersChooses[fieldTitle] = data.data.label;
-      console.log(this.usersChooses);
+      //console.log(this.usersChooses);
     });
 
   }
@@ -136,6 +136,7 @@ export class AdvancedSearchPage implements OnInit{
         region: this.form.region.value,
         relationshipStatus: this.form.relationshipStatus.value,
         religion: this.form.religion.value,
+        religionAffinity: this.form.religionAffinity.value,
         sexOrientation: this.form.sexOrientation.value,
         smoking: this.form.smoking.value,
         withPhoto: this.form.withPhoto.value,
@@ -173,11 +174,11 @@ export class AdvancedSearchPage implements OnInit{
     if( event.value.lower != 0) {
       this.ageLower = event.value.lower;
     }
-    console.log(event);
+  //  console.log(event);
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AdvancedSearchPage');
+  //  console.log('ionViewDidLoad AdvancedSearchPage');
   }
 
 }

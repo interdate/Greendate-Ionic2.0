@@ -11,67 +11,60 @@
         <div class="logo"><a href="/"><img src="/img/icons/logo.png" alt="sugardaddy"></a></div>
     </ion-navbar>
 </ion-header>-->
-<ion-header>
-  <ion-toolbar>
-    <ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </ion-button>
 
-  </ion-toolbar>
-</ion-header>
 
-<div *ngIf="myId != user.id" class="profile-buttons">
+<div *ngIf="myId != user?.id" class="profile-buttons" [ngClass]="{'ios-btns': platform.is('ios')}">
   <div class="online"></div>
   <div (click)="toDialog(user)" class="message-profile-btn profiles-btn"><img src="../../assets/img/icons/pmsgbot.png"></div>
-  <div *ngIf="user.isAddLike == false" (click)="addLike(user)" class="like-profile-btn profiles-btn"><img
+  <div *ngIf="user?.isAddLike == false" (click)="addLike(user)" class="like-profile-btn profiles-btn"><img
           src="../../assets/img/icons/plike.png"></div>
-  <div *ngIf="user.isAddLike" class="disabled like-profile-btn profiles-btn"><img src="../../assets/img/icons/plike.png"></div>
-  <div *ngIf="user.isAddFavorite == false && user.id " (click)="addFavorites(user)"
+  <div *ngIf="user?.isAddLike" class="disabled like-profile-btn profiles-btn"><img src="../../assets/img/icons/plike.png"></div>
+  <div *ngIf="user?.isAddFavorite == false && user.id " (click)="addFavorites(user)"
        class="favorite-profile-btn profiles-btn">
     <img src="../../assets/img/icons/padd.png"></div>
-  <div *ngIf="user.isAddFavorite" class="disabled favorite-profile-btn"><img src="../../assets/img/icons/padd.png"></div>
+  <div *ngIf="user?.isAddFavorite" class="disabled favorite-profile-btn" (click)="addFavorites(user)" ><img src="../../assets/img/icons/remove-favorite.svg"></div>
 </div>
 <div (click)="back()" class="back-btn">
   <ion-icon name="ios-arrow-forward"></ion-icon>
 </div>
 
 
-<ion-content>
-  <div>
+<ion-content overflow-scroll="false" [scrollEvents]="true" #content>
+  <div class="container">
     <div class="online"></div>
-    <!--<div *ngIf="user.photos">
-      <div (click)="fullPagePhotos(user)" class="avatar" [ngStyle]="{ 'background-image': 'url(' + api.url + user.photos[0].url+ ')'}"></div>
-    </div>-->
+    <div *ngIf="user?.photos">
+      <!--<div (click)="fullPagePhotos(user)" class="avatar" [ngStyle]="{ 'background-image': 'url(' + api.url + user.photos[0].url+ ')'}"></div>-->
+    </div>
     <div class="photos" [ngStyle]="{ 'direction': 'ltr'}">
-      <div *ngIf="user.photo" (click)="fullPagePhotos(user)" class="avatar"
-           [ngStyle]="{ 'background-image': 'url(' + user.url+ ')'}"></div>
+      <!--<div *ngIf="user?.photo" (click)="fullPagePhotos(user)" class="avatar"-->
+           <!--[ngStyle]="{ 'background-image': 'url(' + user.url+ ')'}"></div>-->
       <ion-slides pager="true">
-        <ion-slide *ngFor="let usr of user.photos">
+        <ion-slide *ngFor="let usr of user?.photos">
           <div *ngIf="usr.url == '/images/no_photo_2.jpg' || usr.url == '/images/no_photo_1.jpg'"
                [ngStyle]="{ 'background-image': 'url('+ api.url + usr.url + ')'}"
                class="avatar"></div>
 
           <div *ngIf="usr.url != '/images/no_photo_2.jpg' && usr.url != '/images/no_photo_1.jpg'"
-               (click)="fullPagePhotos(user)" [ngStyle]="{ 'background-image': 'url(' + usr.url + ')'}"
+               (click)="fullPagePhotos(user)" [ngStyle]="{ 'background-image': 'url(' + usr.url + '.jpg)'}"
                class="avatar"></div>
         </ion-slide>
       </ion-slides>
     </div>
-    <ion-spinner class="bg" *ngIf="!user.iam"></ion-spinner>
-    <div class="content">
+    <ion-spinner class="bg" *ngIf="!user?.iam"></ion-spinner>
+    <div class="content" #content>
       <div class="pmtitle">
-        <div *ngIf="user.isNew" class="new-user"></div>
-        <div *ngIf="user.isOnline" class="online-user"></div>
-        <span class="age"> {{user.age}} </span> <strong style="float:right;"> {{user.username}}, </strong>
-        <span>{{user.region_name}}</span>
+        <div *ngIf="user?.isNew" class="new-user"></div>
+        <div *ngIf="user?.isOnline" class="online-user"></div>
+        <span class="age"> {{user?.age}} </span> <strong style="float:right;"> {{user?.username}}, </strong>
+        <span>{{user?.region_name}}</span>
       </div>
 
-      <div class="pmdetail cf">
-        <ul padding [ngClass]="{'bg-loader': !user.iam}" class="pmbotul ">
+      <div *ngIf="user?.iam" class="pmdetail cf">
+        <ul padding [ngClass]="{'bg-loader': !user?.iam}" class="pmbotul ">
           <div class="profile-sub-title">אני בקצרה</div>
           <li *ngIf="user.relationshipStatus?.value"><span
-                  class="one">{{user.relationshipStatus?.label }}</span><span
-                  class="two">{{user.relationshipStatus?.value }}</span></li>
+                  class="one">{{user?.relationshipStatus?.label }}</span><span
+                  class="two">{{user?.relationshipStatus?.value }}</span></li>
           <li *ngIf="user.zodiac?.value">
             <span class="one">{{user.zodiac?.label }}</span><span class="two">{{user.zodiac?.value }}</span>
           </li>
@@ -94,16 +87,20 @@
           <li *ngIf="user.religion?.value"><span class="one">{{user.religion?.label }}</span><span
                   class="two">{{user.religion?.value }}</span>
           </li>
+          <li *ngIf="user.religionAffinity?.value"><span class="one">{{user.religionAffinity?.label }}</span><span
+                  class="two">{{ user.religionAffinity.value }}</span>
+          </li>
           <li *ngIf="user.education?.value"><span class="one">{{user.education?.label }}</span><span
                   class="two">{{user.education?.value }}</span>
           </li>
 
-          <div class="profile-sub-title">אני בהרחבה</div>
-          <li *ngIf="user.green?.value"><span
-                  class="one">{{user.green?.label }}</span><span
-                  class="two">{{user.green?.value }}</span></li>
-          <!-- <li *ngIf="user.type?.value"><span class="one">{{user.type?.label }}</span><span class="two">{{user.type?.value }}</span>-->
 
+
+          <div class="profile-sub-title">אני בהרחבה</div>
+          <li *ngIf="user.type?.value"><span class="one">{{user.type?.label }}</span><span class="two">{{user.type?.value }}</span>
+          </li>
+          <li *ngIf="user.nutrition?.value"><span class="one">{{user.nutrition?.label }}</span><span class="two">{{user.nutrition?.value }}</span>
+          </li>
           <li *ngIf="user.veggieReasons?.value"><span class="one">{{user.veggieReasons?.label }}</span><span
                   class="two">{{user.veggieReasons?.value }}</span>
           </li>
@@ -112,8 +109,10 @@
           </li>
           <li *ngIf="user.sport?.value"><span class="one">{{user.sport?.label }}</span><span class="two">{{user.sport?.value }}</span>
           </li>
-          <li *ngIf="user.green?.value"><span class="one">{{user.green?.label }}</span><span class="two">{{user.green?.value }}</span>
-          </li>
+          <li *ngIf="user.green?.value"><span
+                  class="one">{{user.green?.label }}</span><span
+                  class="two">{{user.green?.value }}</span></li>
+          <!-- <li *ngIf="user.type?.value"><span class="one">{{user.type?.label }}</span><span class="two">{{user.type?.value }}</span>-->
           <li *ngIf="user.animals?.value"><span class="one">{{user.animals?.label }}</span><span class="two">{{user.animals?.value }}</span>
           </li>
           <li *ngIf="user.interests?.value"><span class="one">{{user.interests?.label }}</span><span
@@ -122,6 +121,9 @@
           <li *ngIf="user.politicalAffiliation?.value"><span
                   class="one">{{user.politicalAffiliation?.label }}</span><span class="two">{{user.politicalAffiliation?.value }}</span>
           </li>
+
+
+
           <div class="profile-sub-title">איך אני נראה/ית</div>
           <li *ngIf="user.height?.value"><span class="one">{{user.height?.label }}</span><span class="two">{{user.height?.value }}</span>
           </li>
@@ -131,15 +133,20 @@
           </li>
           <li *ngIf="user.hair?.value"><span class="one">{{user.hair?.label }}</span><span class="two">{{user.hair?.value }}</span>
           </li>
+
+
+
           <div *ngIf="user.about?.value" class="profile-sub-title">{{user.about?.label }}</div>
           <li *ngIf="user.about?.value"><span class="three">{{user.about?.value }}</span>
           </li>
+
+
           <div *ngIf="user.perfectdate?.value || user.dish?.value || user.restaurant?.value || user.dinner?.value || user.books?.value || user.music?.value"
                class="profile-sub-title" (click)="moreAbout()">עוד קצת עליי
-            <ion-icon ios="ios-add" md="md-add" *ngIf="!isAbout" class="aboutIcon"></ion-icon>
-            <ion-icon name="remove-circle-outline" *ngIf="isAbout" class="aboutIcon"></ion-icon>
+            <!--<ion-icon ios="ios-add" md="md-add" *ngIf="!isAbout" class="aboutIcon"></ion-icon>-->
+            <!--<ion-icon name="remove-circle-outline" *ngIf="isAbout" class="aboutIcon"></ion-icon>-->
           </div>
-          <div class="moreAboutMe" *ngIf="isAbout">
+          <div class="moreAboutMe" ><!--*ngIf="isAbout"-->
             <li *ngIf="user.perfectdate?.value"><span class="one">{{user.perfectdate?.label }}</span><span
             class="two">{{user.perfectdate?.value }}</span>
             </li>
@@ -155,7 +162,7 @@
             <li *ngIf="user.music?.value"><span class="one">{{user.music?.label }}</span><span class="two">{{user.music?.value }}</span>
             </li>
 
-            <!-- if will be a option to do it dymanic  -->
+             <!--if will be a option to do it dymanic  -->
 
             <!--<div *ngFor="let field of getKeys(user)">-->
             <!--<li *ngIf="user[field].value">-->
@@ -169,48 +176,37 @@
             <div class="profile-sub-title">{{user.looking?.label }}</div>
             <li *ngIf="user.looking?.value"><span>{{user.looking?.value }}</span>
             </li>
-
-
-
         </ul>
 
       </div>
-      <div *ngIf="myId != user.id && formReportAbuse.title" class="pmtitle bottom">
+      <div *ngIf="myId != user?.id && formReportAbuse.title" class="pmtitle bottom">
         <ion-button (click)="reportAbuseShow()" color="dark" class="report-abuse" side="start" >
           <ion-icon name="megaphone"></ion-icon>
           {{ formReportAbuse.title }}
         </ion-button>
-        <ion-button *ngIf="!user.isAddBlackListed" (click)="blockSubmit()" color="dark" class="report-abuse"
+        <ion-button *ngIf="!user?.isAddBlackListed" (click)="blockSubmit()" color="dark" class="report-abuse"
                 side="start">
           <ion-icon name="lock"></ion-icon>
           {{ texts?.lock }}
         </ion-button>
-        <ion-button *ngIf="user.isAddBlackListed" (click)="blockSubmit()" color="dark" class="report-abuse">
+        <ion-button *ngIf="user?.isAddBlackListed" (click)="blockSubmit()" color="dark" class="report-abuse">
           <ion-icon name="unlock"></ion-icon>
           {{ texts?.unlock }}
         </ion-button>
       </div>
 
       <div *ngIf="isAbuseOpen" class="abuse-form">
-        <ion-item>
-          <ion-textarea [(ngModel)]="formReportAbuse.text.value" rows="3"></ion-textarea>
-        </ion-item>
-
-        <div class='btn-opt' padding>
+          <ion-item>
+            <ion-textarea (click)="test()" [(ngModel)]="formReportAbuse?.text.value" rows="3"></ion-textarea>
+          </ion-item>
+        <div class='btn-opt'>
           <ion-button class="cancel" color="danger" (click)="reportAbuseClose()">{{
-            formReportAbuse.ion-buttons.cancel }}
+            formReportAbuse.buttons.cancel }}
           </ion-button>
-          <ion-button color="danger" (click)="abuseSubmit()">{{ formReportAbuse.ion-buttons.submit }}
+          <ion-button color="danger" (click)="abuseSubmit()">{{ formReportAbuse.buttons.submit }}
           </ion-button>
         </div>
       </div>
     </div>
   </div>
 </ion-content>
-<ion-footer>
-
-  <ion-toolbar class="footerMenu">
-    <ion-title>settings</ion-title>
-  </ion-toolbar>
-
-</ion-footer>

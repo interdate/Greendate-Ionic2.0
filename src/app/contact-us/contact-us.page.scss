@@ -30,7 +30,7 @@
   }
 
   ion-list {
-    background-color: #f0f0f0;
+    background-color: #DBDBD2;
   }
 
   .border-red {
@@ -41,4 +41,9 @@
     position: relative;
     bottom: 11px;
     right: 27px;
+  }
+
+  ion-button {
+    width: 90%;
+    margin: 0 4.5%;
   }

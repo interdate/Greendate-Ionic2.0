@@ -4,17 +4,8 @@ ion-card {
   margin: 7px 5px;
 }
 
-  .sorting {
-    width: 320px;
-    right: 50%;
-    top: 60px;
-    margin-right: -160px;
-    position: fixed;
-    padding: 5px 5px;
-    background: rgba(255, 255, 255, 0.7);
-    z-index: 101;
-    border-radius: 0 0 10px 10px;
-  }
+
+
 .wrap {
   background-color: black;color:white;
   .location {
@@ -42,10 +33,10 @@ ion-card {
 
   .sorting .close {
     margin: 0;
-    padding: 3px 4px;
-    line-height: 69px;
-    font-size: 20px;
-    height: 22px;
+    padding: 3px 7px 0 0;
+    line-height: 6px;
+    font-size: 29px;
+    height: 27px;
   }
 
   .sorting .open {
@@ -61,6 +52,7 @@ ion-card {
     padding: 0 5px;
     width: 220px;
     height: 30px;
+    border-radius: 5px;
   }
 
   .sortby * {
@@ -82,7 +74,7 @@ ion-card {
 
   .mem-right {
     float: right;
-    width: 222px;
+    width: 214px;
     box-sizing: border-box;
   }
 
@@ -117,28 +109,34 @@ ion-card {
   .list-ios > .item-block:first-child {
     border-top: 0;
   }
-.open {
-  margin: 13px auto -42px;
-  z-index: 999;
-  font-size: 22px;
-  margin-bottom: -35px;
-}
 
-.open-div {
-  height: 10px;
-  //background-color: white;
-  margin-bottom: 10px;
-}
+  .open {
+    margin: 13px auto -42px;
+    z-index: 999;
+    font-size: 22px;
+    margin-bottom: -35px;
+    position: fixed;
+    top: 54px;
+    left: 0;
+    right: 0;
+  }
 
-.ion-list {
-  --background: #ccc;
-  margin-top: 60px;
-}
+  .open-div {
+    height: 10px;
+    //background-color: white;
+    margin-bottom: 10px;
+  }
+
+  .ion-list {
+    --background: #ccc;
+      margin-top: 54px;
+  }
+
   .online {
     top: 7px;
     right: 10px;
     height: 12px;
-    width: 12px;
+    width: 12px!important;
     background-color: #45d362;
     position: absolute;
     border-radius: 100%;
@@ -155,31 +153,31 @@ ion-card {
   }
 
   @media (max-width: 414px) {
-    .card-ios {
-      width: calc(55% - 20.6px);
-    }
-    .sorting .open {
-      right: calc(50% - 7px);
-    }
+    //.card-ios {
+    //  width: calc(55% - 20.6px);
+    //}
+    //.sorting .open {
+    //  right: calc(50% - 7px);
+    //}
   }
 
-  @media (max-width: 375px) {
-    .card-ios {
-      width: calc(56% - 21.6px);
-    }
-    .sorting .open {
-      right: calc(50% - 8px);
-    }
-  }
-
-  @media (max-width: 320px) {
-    .card-ios {
-      width: calc(58% - 23.6px);
-    }
-    .sorting .open {
-      right: calc(50% - 8px);
-    }
-  }
+  //@media (max-width: 375px) {
+  //  .card-ios {
+  //    width: calc(56% - 21.6px);
+  //  }
+  //  .sorting .open {
+  //    right: calc(50% - 8px);
+  //  }
+  //}
+  //
+  //@media (max-width: 320px) {
+  //  .card-ios {
+  //    width: calc(58% - 23.6px);
+  //  }
+  //  .sorting .open {
+  //    right: calc(50% - 8px);
+  //  }
+  //}
 
   .new-user{
     background: url(../../assets/img/icons/new.png) no-repeat;
@@ -194,9 +192,9 @@ ion-card {
 
 
 
-.platform-ios  .sorting {
-  top: 70px;
-}
+//.platform-ios  .sorting {
+//  top: 71px;
+//}
 
 .platform-ios  .sorting .icon-ios {
   font-size: 1.8em;
@@ -215,6 +213,8 @@ ul {
   text-align: center;
   height: 35px;
   width: 70px;
+  position: relative;
+  bottom: 17px;
 }
 
 ion-card {
@@ -239,10 +239,9 @@ ion-card {
 
 }
 .long-name{
-
-  width: 65%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 12px !important;
+  margin: 0 0 0 -2px;
+  padding: 0!important;
 }
 .name {
   font-size: 14px;
@@ -364,7 +363,7 @@ ul.profile-btn .btn div {
   width: 100%;
   height: 150px;
   background-size: cover;
-  background-position: center;
+  background-position: unset;
   border-radius: 11px 11px 0 0;
 }
 
@@ -376,6 +375,12 @@ ul.profile-btn .btn div {
   padding-right: 0;
 }
 
+.no_results {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 18px;
+}
+
 .label-md, .label-ios {
   margin-right: 0;
   margin-bottom: 0
@@ -385,3 +390,50 @@ ul.profile-btn .btn div {
   margin: -10px, 0;
 }
 
+ion-select:before {
+  content: "edit";
+  width: 50px;
+  height: 93%;
+  position: absolute;
+  font-size: 0px;
+  top: 0px;
+  left: 4px;
+  z-index: 999;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+  .sorting {
+    width: 320px;
+    right: 50%;
+    top: 57px;
+    margin-right: -160px;
+    position: fixed;
+    padding: 5px 5px;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 101;
+    border-radius: 0 0 10px 10px;
+  }
+
+
+ .ios {
+
+    .sorting {
+      top: 77px;
+    }
+
+ }
+
+
+  //.ion-list {
+  //  position: relative;
+  //  bottom: 47px;
+  //  margin-top: 80px;
+  //}
+
+
+
+
+ion-content {
+  display: flex;
+}

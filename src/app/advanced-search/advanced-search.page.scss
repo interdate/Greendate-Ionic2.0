@@ -20,12 +20,12 @@
   }
 
   .border-top {
-    padding: 16px 5px;
+    padding: 17px 5px;
   }
 
   ion-select {
     float: left;
-    padding: 4px;
+    padding: 7px 0 7px 5px;
     width: 100%;
     position: relative;
     bottom: 20px;
@@ -35,4 +35,13 @@
   ion-checkbox {
     position: absolute;
     left: 0px;
+  }
+
+  ion-content {
+    display: flex;
+  }
+
+  .ios .container {
+    //max-height: calc( 100% - 64px );
+    //overflow: auto;
   }

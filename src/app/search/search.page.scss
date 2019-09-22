@@ -36,3 +36,8 @@
     padding: 8px!important;
     margin: 27px 0 12px;
   }
+
+  .search-container {
+    max-height: calc( 100% - 60px );
+    overflow: auto;
+  }

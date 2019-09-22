@@ -10,4 +10,11 @@ h2 {
   margin-bottom: 4px;
   font-size: 15px; }
 
+.faq {
+  height: calc(100% - 67px);
+  overflow: auto; }
+
+ion-content {
+  display: flex; }
+
 /*# sourceMappingURL=faq.page.css.map */

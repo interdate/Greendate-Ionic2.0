@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ApiQuery} from '../api.service';
 import {Router} from "@angular/router";
+import {IonContent} from "@ionic/angular";
 
 /*
  Generated class for the FreezeAccount page.
@@ -13,6 +14,7 @@ import {Router} from "@angular/router";
   styleUrls: ['freeze-account.page.scss']
 })
 export class FreezeAccountPage implements OnInit{
+  @ViewChild(IonContent) content: IonContent;
 
   public form: any = {text: {value: ''}, description: ''};
 
@@ -26,7 +28,11 @@ export class FreezeAccountPage implements OnInit{
 
 
   ngOnInit() {
-
+    window.addEventListener('keyboardWillShow', () => {
+      setTimeout(()=> {
+        this.content.scrollToBottom(300);
+      }, 300);
+    });
     this.api.pageName = 'FreezeAccountPage';
     this.api.http.get(this.api.url + '/api/v2/freeze', this.api.header).subscribe((data:any) => {
       this.form.description = data.description;
