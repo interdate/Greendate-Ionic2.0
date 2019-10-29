@@ -68,6 +68,14 @@ export class PasswordRecoveryPage implements OnInit{
         }
     }
 
+    onOpenKeyboard() {
+        $('.footerMenu').hide();
+    }
+
+    onCloseKeyboard() {
+        $('.footerMenu').show();
+    }
+
     ionViewDidLoad() {
         console.log('ionViewDidLoad PasswordRecoveryPage');
     }

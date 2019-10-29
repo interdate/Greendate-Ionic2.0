@@ -447,10 +447,12 @@ export class AppComponent {
 
 
   initializeApp() {
+
     this.platform.ready().then(() => {
       this.getAppVersion();
-      this.statusBar.styleDefault();
-
+      this.statusBar.show();
+      // this.statusBar.styleDefault();
+      //this.statusBar.hide();
       //this.splashScreen.hide();
     });
   }
@@ -546,10 +548,11 @@ export class AppComponent {
   getBingo() {
     this.api.storage.get('user_data').then((val) => {
       if (val) {
-        this.api.http.get(this.api.url + '/app_dev.php/api/v2/bingo', this.api.setHeaders(true)).subscribe((data: any) => {
+        this.api.http.get(this.api.url + '/api/v2/bingo', this.api.setHeaders(true)).subscribe((data: any) => {
           this.api.storage.set('status', this.status);
           this.avatar = data.texts.photo;
           this.texts = data.texts;
+          console.log('THERE  2  12334656786484');
           // DO NOT DELETE
           if (this.status != data.status) {
             this.status = data.status;
@@ -560,7 +563,7 @@ export class AppComponent {
           if (data.user) {
             this.api.data['data'] = data;
             this.router.navigate(['/bingo']);
-            this.api.http.get(this.api.url + '/app_dev.php/api/v2/bingo?likeMeId=' + data.user.id, this.api.setHeaders(true)).subscribe(data => {
+            this.api.http.get(this.api.url + '/api/v2/bingo?likeMeId=' + data.user.id, this.api.setHeaders(true)).subscribe(data => {
             });
           }
         });
@@ -694,80 +697,79 @@ export class AppComponent {
           this.getStatistics();
         });
 
-        // let that = this;
-        // window.addEventListener('native.keyboardshow', function () {
-        //   //alert(1);
-        //   $('.link-banner').hide();
-        //   $('.footerMenu, .back-btn').hide();
-        //   $('.back-btn').hide();
-        //
-        //
-        //   if (that.api.pageName == 'DialogPage') {
-        //     $('.banner').hide();
-        //
-        //     setTimeout(function () {
-        //       $('.scroll-content, .fixed-content').css({'margin-bottom': '57px'});
-        //       $('.form-dialog').css({'margin-bottom': '-20px'});
-        //     }, 200);
-        //   } else {
-        //     $('.banner').show();
-        //     setTimeout(function () {
-        //       $('ion-content').css({'margin-bottom': '0px'});
-        //     }, 200);
-        //
-        //   }
-        //
-        // });
+       let that = this;
+        window.addEventListener('native.keyboardshow', function () {
+          console.log('keyboardshow');
+          $('.link-banner').hide();
+          $('.footerMenu, .back-btn').hide();
+          $('.back-btn').hide();
 
-        // window.addEventListener('keyboardWillShow', () => {
-        //   $('.footerMenu').hide();
-        // });
-        //
-        // window.addEventListener('keyboardWillHide', () => {
-        //   if(this.api.pageName != 'DialogPage') {
-        //     $('.footerMenu').show();
-        //   }
-        // });
-    //
-    //     window.addEventListener('native.keyboardhide', function () {
-    //       //let page = el.nav.getActive();
-    //       //$('.footerMenu, .back-btn').show();
-    //         $('ion-content').css({'height': '100%'});
-    //       that.bannerStatus();
-    //       // that.keyboard.hide();
-    //       if (that.api.pageName == 'DialogPage') {
-    //         $('.back-btn').show();
-    //         $('.footerMenu').hide();
-    //         setTimeout(function () {
-    //           //$('.scroll-content, .fixed-content').css({'margin-bottom': '115px'});
-    //           $('.scroll-content, .fixed-content').css({'margin-bottom': '57px'});
-    // //          that.content.scrollTo(0, 999999, 300);
-    //         }, 600);
-    //       } else {
-    //         $('.footerMenu, .back-btn').show();
-    //         setTimeout(function () {
-    //           $('.scroll-content, .fixed-content').css({'margin-bottom': '0px'});
-    //         }, 500);
-    //       }
-    //
-    //     });
 
-        // window.addEventListener('keyboardWillShow', () => {
-        //   let page = this.api.pageName;
-        //   $('.footerMenu').hide();
-        //   if(page == 'DialogPage'/* || page == 'LoginPage'*/ || page == 'ProfilePage' || page == 'SearchPage') {
-        //     setTimeout(()=>{
-        //       this.content.scrollToBottom(300);
-        //     }, 300);
-        //   }
-        //
-        // });
+          if (that.api.pageName == 'DialogPage') {
+            $('.banner').hide();
 
-        // window.addEventListener('keyboardWillHide', () => {
-        //   $('footerMenu').show();
-        //   this.content.scrollToBottom(300);
-        //   $('.content').css({'margin-bottom': '50px', 'height': '101%'});
-        // });
+            setTimeout(function () {
+             $('.ios .user-block').css({
+               'margin-top': '235px'
+             });
+            }, 200);
+          } else {
+            $('.banner').show();
+            setTimeout(function () {
+              $('ion-content').css({'margin-bottom': '0px'});
+            }, 200);
+
+          }
+
+          if(that.api.pageName == 'EditProfilePage') {
+            console.log('if uf edit page');
+            $('.container').css({
+              'margin': '0 0 197px!important'
+            });
+          } else if(that.api.pageName == 'ProfilePage') {
+              console.log('if uf profile page');
+              $('.container').css({ 'margin-bottom': '32px'});
+              $('.abuse-form').css({'padding-bottom': 0});
+              $('.content').css({'padding-bottom': 0});
+          }
+
+        });
+
+
+        window.addEventListener('native.keyboardhide', function () {
+          //let page = el.nav.getActive();
+          //$('.footerMenu, .back-btn').show();
+            $('ion-content').css({'height': '100%'});
+          that.bannerStatus();
+          // that.keyboard.hide();
+          if (that.api.pageName == 'DialogPage') {
+            $('.back-btn').show();
+            $('.footerMenu').hide();
+            setTimeout(function () {
+              $('.ios .user-block').css({
+                'margin-top': '27px'
+              });
+            }, 600);
+          } else {
+            $('.footerMenu, .back-btn').show();
+            setTimeout(function () {
+              $('.scroll-content, .fixed-content').css({'margin-bottom': '0px'});
+            }, 500);
+          }
+          if(that.api.pageName == 'EditProfilePage') {
+            $('.container').css({
+              'margin': '0 0 69px!important'
+            });
+          } else if(that.api.pageName == 'ProfilePage') {
+              $('.container').css({ 'margin-bottom': '32px'});
+              $('.abuse-form').css({'padding-bottom': 0});
+              $('.content').css({'padding-bottom': 0});
+          }
+
+
+
+        });
+
 
         if (this.api.pageName == 'HomePage' && this.interval == false) {
           $('.link-banner').show();

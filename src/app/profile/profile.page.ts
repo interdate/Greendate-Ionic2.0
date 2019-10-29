@@ -98,80 +98,56 @@ export class ProfilePage {
     }
 
 
-    test() {
+    onClickInput() {
         $('.footerMenu').hide();
-        $('.content').css(
-            {
-                'margin-bottom': 0,
-                'padding-bottom': '23px',
-            }
-        );
-        $('.abuse-form').css(
-            {
-               // 'padding-bottom': '23px',
-                'padding-bottom': '0',
-            }
-        );
+        $('.container').css({ 'margin-bottom': '32px'});
+        $('.abuse-form').css({'padding-bottom': 0});
+        $('.content').css({'padding-bottom': 0});
         setTimeout(()=>{
             this.content.scrollToBottom(100);
         }, 300);
     }
 
-    // scrollToBottom() {
-    //     setTimeout( () => {
-    //         this.content.scrollToBottom(300);
-    //     }, 400);
-    // }
 
-    // onOpenKeyboard() {
-    //     let that = this;
-    //     $('.footerMenu').hide();
-    //     that.scrollToBottom();
-    //     $('.content').css(
-    //         {
-    //             'margin-bottom': 0,
-    //             'padding-bottom': '23px',
-    //         }
-    //     );
-    //     $('.abuse-form').css(
-    //         {
-    //             'padding-bottom': '23px',
-    //         }
-    //     );
-    // }
+    onBlurInput() {
+        $('.footerMenu').show();
+        $('.container').css({ 'margin-bottom': '66px'});
+    }
+
 
     onOpenKeyboard() {
-        $('.footerMenu').hide();
-        $('.content').css(
-            {
-                'margin-bottom': 0,
-                'padding-bottom': '23px',
-            }
-        );
-        $('.abuse-form').css(
-            {
-                'padding-bottom': '23px',
-            }
-        );
-        setTimeout(()=>{
-            this.content.scrollToBottom(100);
-        }, 300);
+        // $('.footerMenu').hide();
+        // $('.content').css(
+        //     {
+        //         'margin-bottom': 0,
+        //         'padding-bottom': '23px',
+        //     }
+        // );
+        // $('.abuse-form').css(
+        //     {
+        //         'padding-bottom': '23px',
+        //     }
+        // );
+        // setTimeout(()=>{
+        //     this.content.scrollToBottom(100);
+        // }, 300);
     }
 
     onHideKeyboard() {
-        $('.footerMenu').show();
-        $('.content').css(
-            {
-                'height': '101%',
-                'padding-bottom': '80px',
-            }
-        );
-        $('.abuse-form').css(
-            {
-                //'padding-bottom': '67px',
-                'padding-bottom': '0',
-            }
-        );
+        // $('.footerMenu').show();
+        // $('.content').css(
+        //     {
+        //         'height': '101%',
+        //         'padding-bottom': '10px',
+        //     }
+        // );
+        // $('.abuse-form').css(
+        //     {
+        //         //'padding-bottom': '67px',
+        //         'padding-bottom': '0',
+        //     }
+        // );
+
     }
 
     ionViewWillEnter() {
@@ -188,7 +164,7 @@ export class ProfilePage {
     }
 
     getUesr(){
-        this.api.http.get(this.api.url + '/app_dev.php/api/v2/users/' + this.user.id, this.api.setHeaders(true)).subscribe((data:any)=> {
+        this.api.http.get(this.api.url + '/api/v2/users/' + this.user.id, this.api.setHeaders(true)).subscribe((data:any)=> {
            this.user = data;
            this.formReportAbuse = data.formReportAbuse;
            this.changeRef.detectChanges();
@@ -273,9 +249,9 @@ export class ProfilePage {
   reportAbuseShow() {
     this.isAbuseOpen = true;
       setTimeout(()=>this.content.scrollToBottom(300), 300);
-      $('.abuse-form').css(
+      $('.pmtitle.bottom').css(
           {
-              'padding-bottom': '67§px',
+              'margin-bottom': '0px',
           }
       );
   }
@@ -285,7 +261,9 @@ export class ProfilePage {
     this.formReportAbuse.text.value = "";
     this.keyboard.hide();
     $('.footerMenu').show();
+    $('.pmtitle.bottom').css({'margin-bottom': '66px'});
   }
+
 
     closeKeyboard() {
         this.keyboard.hide();
@@ -308,8 +286,8 @@ export class ProfilePage {
 
   ionViewWillLeave() {
       this.keyboard.hide();
-      window.removeEventListener('keyboardWillShow', this.onOpenKeyboard);
-      window.removeEventListener('keyboardWillHide', this.onHideKeyboard);
+      // window.removeEventListener('keyboardWillShow', this.onOpenKeyboard);
+      // window.removeEventListener('keyboardWillHide', this.onHideKeyboard);
   }
 
 }

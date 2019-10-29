@@ -24,11 +24,11 @@ ion-card {
   margin-right: 5px; }
 
 .sorting .close {
-  margin: 0;
-  padding: 3px 7px 0 0;
-  line-height: 6px;
   font-size: 29px;
-  height: 27px; }
+  height: 29px;
+  position: absolute;
+  top: 7px;
+  left: 17px; }
 
 .sorting .open {
   position: absolute;
@@ -40,12 +40,12 @@ ion-card {
   line-height: 32px;
   background: #fff;
   padding: 0 5px;
-  width: 220px;
+  width: 189px;
   height: 30px;
   border-radius: 5px; }
 
 .sortby * {
-  width: 220px;
+  width: 194px;
   position: relative; }
 
 .sortby ion-select {
@@ -61,7 +61,7 @@ ion-card {
 
 .mem-right {
   float: right;
-  width: 214px;
+  width: 195px;
   box-sizing: border-box; }
 
 .mem-left {
@@ -93,10 +93,9 @@ ion-card {
   border-top: 0; }
 
 .open {
-  margin: 13px auto -42px;
+  margin: 34px auto -35px;
   z-index: 999;
   font-size: 22px;
-  margin-bottom: -35px;
   position: fixed;
   top: 54px;
   left: 0;
@@ -108,7 +107,14 @@ ion-card {
 
 .ion-list {
   --background: #ccc;
-  margin-top: 54px; }
+  /* margin-top: 54px; */
+  /* height: 97%; */
+  overflow: auto;
+  /* position: absolute; */
+  /* bottom: 4%; */
+  width: 100%;
+  /* margin: 50px 0; */
+  margin: 32px 0 26px; }
 
 .online {
   top: 7px;
@@ -153,7 +159,7 @@ ul {
   height: 35px;
   width: 70px;
   position: relative;
-  bottom: 17px; }
+  bottom: 35px; }
 
 ion-card {
   float: right; }
@@ -303,19 +309,21 @@ ul.profile-btn .btn div {
 ion-select:before {
   content: "edit";
   width: 50px;
-  height: 93%;
+  height: 30px;
   position: absolute;
   font-size: 0px;
   top: 0px;
-  left: 4px;
+  left: 0px;
   z-index: 999;
   background-color: #fff;
   border-radius: 5px; }
 
 .sorting {
   width: 320px;
+  height: 5.5%;
+  min-height: 40px;
   right: 50%;
-  top: 57px;
+  top: 73px;
   margin-right: -160px;
   position: fixed;
   padding: 5px 5px;
@@ -323,10 +331,15 @@ ion-select:before {
   z-index: 101;
   border-radius: 0 0 10px 10px; }
 
-.ios .sorting {
-  top: 77px; }
-
 ion-content {
   display: flex; }
+
+.container {
+  height: 80%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  top: 45px; }
 
 /*# sourceMappingURL=home.page.css.map */

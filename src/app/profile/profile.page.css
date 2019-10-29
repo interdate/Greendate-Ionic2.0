@@ -56,7 +56,7 @@
 
 .pmtitle.bottom {
   text-align: center;
-  padding: 4px 10px 17px; }
+  padding: 4px 10px 5px; }
 
 .pmtitle.bottom span ion-icon {
   margin-right: 5px; }
@@ -150,6 +150,16 @@ ion-content {
   margin-top: 1px; }
 
 .ios-btns .profile-buttons {
-  top: 84px; }
+  top: 97px; }
+
+.container {
+  margin-bottom: 66px;
+  margin-top: 16px; }
+
+.profile-buttons {
+  position: fixed;
+  top: 84px;
+  left: 10px;
+  z-index: 9999; }
 
 /*# sourceMappingURL=profile.page.css.map */

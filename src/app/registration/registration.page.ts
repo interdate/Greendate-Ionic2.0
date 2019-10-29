@@ -117,6 +117,21 @@ export class RegistrationPage implements OnInit {
         return new Date().getFullYear() - 18;
     }
 
+    onOpenKeyboard()  {
+        $('.footerMenu').hide();
+        $('.container').css({
+            'margin': '11px auto 197px!important'
+        });
+    }
+
+
+    onHideKeyboard() {
+      $('.container').css({
+          'margin': '11px auto 69px!important'
+      });
+      $('.footerMenu').show();
+    }
+
     formSubmit() {
 
         this.err = {};
@@ -274,7 +289,7 @@ export class RegistrationPage implements OnInit {
 
         }
        // alert(JSON.stringify(this.user));
-        this.api.http.post(this.api.url + '/app_dev.php/open_api/v2/signs/ups/news.json', data, this.api.setHeaders()).subscribe((res:any) => {
+        this.api.http.post(this.api.url + '/open_api/v2/signs/ups/news.json', data, this.api.setHeaders()).subscribe((res:any) => {
             this.validate(res);
         }), err => this.api.hideLoad();
     }
@@ -351,6 +366,7 @@ export class RegistrationPage implements OnInit {
                     console.log('in the 3 step');
                     response.user.form.veggieReasons = this.form.veggieReasons;
                     response.user.form.interests = this.form.interests;
+                    response.user.form.animals = this.form.animals;
                 }
                 this.form = response.user.form;
                 this.formKeys = this.getKeys(this.form);

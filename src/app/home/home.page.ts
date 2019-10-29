@@ -136,7 +136,20 @@ export class HomePage {
     }
 
     filterStatus() {
-        this.options.filter = this.options.filter === 1 ? 0 : 1;
+       this.options.filter = this.options.filter === 1 ? 0 : 1;
+
+        // if(this.options.filter == 1) {
+        //     this.options.filter = 0;
+        //     // $('.ion-list').css({
+        //     //     'height': '97%'
+        //     // });
+        // } else {
+        //     this.options.filter = 1;
+        //     // $('.ion-list').css({
+        //     //     'height': '95%'
+        //     // });
+        //}
+
     }
 
     toDialog(user) {
@@ -198,9 +211,12 @@ export class HomePage {
 
 
         this.api.http.post(this.api.url + '/api/v2/lists/' + user.id, params, this.api.setHeaders(true)).subscribe((data: any) => {
+            this.loader =  true;
             this.api.toastCreate(data.success, 2500);
-            console.log(data);
-            this.loader = data.users.length >= 9 ? true : false;
+            console.log('in there');
+            if(data.users.length >= 9) {
+                this.loader = false;
+            }  
             this.params.page = 1;
         });
     }
@@ -273,6 +289,8 @@ export class HomePage {
             this.filter = data.filter;
             if (data.users.length < 10) {
                 this.loader = false;
+            } else {
+                this.loader = true;
             }
             this.api.hideLoad();
             this.content.scrollToTop(0);

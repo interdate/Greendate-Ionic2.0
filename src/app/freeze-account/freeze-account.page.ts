@@ -28,11 +28,7 @@ export class FreezeAccountPage implements OnInit{
 
 
   ngOnInit() {
-    window.addEventListener('keyboardWillShow', () => {
-      setTimeout(()=> {
-        this.content.scrollToBottom(300);
-      }, 300);
-    });
+
     this.api.pageName = 'FreezeAccountPage';
     this.api.http.get(this.api.url + '/api/v2/freeze', this.api.header).subscribe((data:any) => {
       this.form.description = data.description;
@@ -62,6 +58,16 @@ export class FreezeAccountPage implements OnInit{
 
   }
 
+  onOpenKeyboard() {
+    $('.footerMenu').hide();
+    setTimeout( () => {
+      this.content.scrollToBottom(100);
+    }, 300 );
+  }
+
+  onCloseKeyboard() {
+    $('.footerMenu').show();
+  }
 
   validate(response) {
     console.log(response);

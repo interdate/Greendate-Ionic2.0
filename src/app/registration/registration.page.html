@@ -26,7 +26,7 @@
                 <div [ngClass]="{'yellow-bg': (err[formKeys[i]]?.errors) || (err[field]?.children?.errors[0])}" class="placeholder">{{ form[field].label }}
                 </div>
                 <div>
-                    <ion-input  [ngClass]="{'border-red': (err[formKeys[i]]?.errors) || (err[field]?.children?.errors[0])}" class="ion-input" type="text" ngDefaultControl [(ngModel)]="form[field].value" required>
+                    <ion-input (ionFocus)="onOpenKeyboard" (ionBlur)="onCloseKeyboard" [ngClass]="{'border-red': (err[formKeys[i]]?.errors) || (err[field]?.children?.errors[0])}" class="ion-input" type="text" ngDefaultControl [(ngModel)]="form[field].value" required>
                     </ion-input>
                 </div>
                 <div class="err">{{ err[formKeys[i]]?.errors }}</div>
@@ -35,7 +35,7 @@
                 <div [ngClass]="{'yellow-bg': (err[formKeys[i]]?.errors) || (err[field]?.children?.errors[0])}" class="placeholder">{{ form[field].label }}
                 </div>
                 <div>
-                   <ion-textarea rows="{{ (form[field].name == 'signUpTwo[about]' || form[field].name == 'signUpTwo[looking]') ? '8': '4' }}" [ngClass]="{'border-red': (err[formKeys[i]]?.errors) || (err[field]?.children?.errors[0])}" class="textarea" type="text" ngDefaultControl [(ngModel)]="form[field].value" required>
+                   <ion-textarea (ionFocus)="onOpenKeyboard" (ionBlur)="onCloseKeyboard" rows="{{ (form[field].name == 'signUpTwo[about]' || form[field].name == 'signUpTwo[looking]') ? '8': '4' }}" [ngClass]="{'border-red': (err[formKeys[i]]?.errors) || (err[field]?.children?.errors[0])}" class="textarea" type="text" ngDefaultControl [(ngModel)]="form[field].value" required>
 
                     </ion-textarea>
                  </div>
@@ -46,7 +46,7 @@
                     <div [ngClass]="{'yellow-bg': err[formKeys[i]]?.errors || err[field]?.children.first.errors}"   class="placeholder">{{form[field][choose].label }}
                     </div>
                     <div  class="ion-item">
-                        <ion-input [ngClass]="{'border-red': err[formKeys[i]]?.errors || err[field]?.children.first.errors }"  class="ion-input" type="{{form[field][choose].type == 'password' ? 'password' : 'email'}}" ngDefaultControl [(ngModel)]="form[field][choose].value" aria-required="true" minlength="7"></ion-input>
+                        <ion-input (ionFocus)="onOpenKeyboard" (ionBlur)="onCloseKeyboard" [ngClass]="{'border-red': err[formKeys[i]]?.errors || err[field]?.children.first.errors }"  class="ion-input" type="{{form[field][choose].type == 'password' ? 'password' : 'email'}}" ngDefaultControl [(ngModel)]="form[field][choose].value" aria-required="true" minlength="7"></ion-input>
                     </div>
                     <div class="err">{{ err[field]?.children[choose].errors }}</div>
                     <div class="err">{{ err[formKeys[i]]?.errors }}</div>
@@ -79,7 +79,7 @@
                 </div>
                 <div class="ion-item" >
                     <ion-datetime ngDefaultControl [ngClass]="{'border-red': (err[formKeys[i]]?.errors) || (err[form[field]]?.children?.errors)}" [(ngModel)]="birth" displayFormat="YYYY MM DD" [max]="maxYear()"
-                                   pickerFormat="DD MM YYYY" mode="ios" [doneText]="'אישור'" [cancelText]="'ביטול'" (ionFocus)="addCss()">
+                                   pickerFormat="DD MM YYYY" mode="ios" [doneText]="'אישור'" [cancelText]="'ביטול'">
 
                     </ion-datetime>
                 </div>

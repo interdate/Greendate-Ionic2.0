@@ -7,7 +7,7 @@ import {Router} from "@angular/router";
 import {HttpHeaders} from "@angular/common/http";
 import {Events} from "@ionic/angular";
 import {IonContent} from "@ionic/angular";
-import {Keyboard} from "@ionic-native/keyboard";
+import { Keyboard } from '@ionic-native/keyboard/ngx';
 
 @Component({
   selector: 'page-edit-profile',
@@ -33,44 +33,37 @@ export class EditProfilePage implements OnInit {
   allfields = '';
   step: any = 1;
 
+
   constructor(public api: ApiQuery,
               public modalCtrl: ModalController,
               public router: Router,
               public events: Events,
-              private sanitizer: DomSanitizer) {}
+              private sanitizer: DomSanitizer,
+              public keyboard: Keyboard) {}
 
 
   ngOnInit() {
-
+       // this.keyboard.hideKeyboardAccessoryBar(false);
+       // this.keyboard.disableScroll(true);
+      this.keyboard.hideFormAccessoryBar(false);
+     // this.keyboard.disableScroll(false);
       this.edit_step(1);
   }
 
 
-    onOpenKeyboard() {
-        $('.footerMenu').hide();
-        if(this.step == 1) {
-            $('.container').css(
-                {
-                    'margin': '0 0 6px!important'
-                }
-            );
-            setTimeout(() => {
-                this.content.scrollToBottom(100);
-            }, 400)
-        } else if(this.step == 3) {
-
-        }
+     onOpenKeyboard()  {
+       $('.footerMenu').hide();
+         $('.container').css({
+             'margin': '0 0 197px!important'
+         });
     }
 
 
     onHideKeyboard() {
-        if(this.step == 1) {
-            $('.container').css(
-                {
-                    'margin': '0 0 69px!important'
-                }
-            );
-        }
+        $('.container').css({
+                'margin': '0 0 69px!important'
+            });
+
         $('.footerMenu').show();
     }
 
@@ -199,7 +192,7 @@ export class EditProfilePage implements OnInit {
 
       }
 
-    this.api.http.post(this.api.url + '/app_dev.php/api/v2/edits/profiles', data, this.api.setHeaders(true)).subscribe((data:any) => {
+    this.api.http.post(this.api.url + '/api/v2/edits/profiles', data, this.api.setHeaders(true)).subscribe((data:any) => {
         this.err = data.errors.form.children;
         console.log(this.err);
         if(data.success) {
@@ -262,13 +255,13 @@ export class EditProfilePage implements OnInit {
 
   ionViewWillEnter() {
       this.api.pageName = 'RegistrationPage';
-      window.addEventListener('keyboardWillShow', this.onOpenKeyboard);
-      window.addEventListener('keyboardWillHide', this.onHideKeyboard);
+      // window.addEventListener('keyboardWillShow', this.onOpenKeyboard);
+      // window.addEventListener('keyboardWillHide', this.onHideKeyboard);
   }
 
   ionViewWillLeave() {
-      window.removeEventListener('keyboardWillShow', this.onOpenKeyboard);
-      window.removeEventListener('keyboardWillHide', this.onHideKeyboard);
+      //window.removeEventListener('keyboardWillShow', null);
+      // window.removeEventListener('keyboardWillHide', null);
   }
 
 }

@@ -105,19 +105,19 @@ export class ChangePasswordPage {
     $('.footerMenu').hide();
   }
 
-  onHideKeyboard() {
+  onCloseKeyboard() {
     $('.footerMenu').show();
   }
 
   ionViewWillEnter() {
     this.api.pageName = 'ChangePasswordPage';
     console.log(this.api.pageName);
-    window.addEventListener('keyboardWillShow', this.onOpenKeyboard);
-    window.addEventListener('keyboardWillHide', this.onHideKeyboard);
+    // window.addEventListener('keyboardWillShow', this.onOpenKeyboard);
+    // window.addEventListener('keyboardWillHide', this.onHideKeyboard);
   }
 
-  ionViewWillLeave() {
-    window.removeEventListener('keyboardWillShow', this.onOpenKeyboard);
-    window.removeEventListener('keyboardWillHide', this.onHideKeyboard);
-  }
+  // ionViewWillLeave() {
+  //   window.removeEventListener('keyboardWillShow', this.onOpenKeyboard);
+  //   window.removeEventListener('keyboardWillHide', this.onHideKeyboard);
+  // }
 }

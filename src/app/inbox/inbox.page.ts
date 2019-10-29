@@ -103,7 +103,7 @@ export class InboxPage{
                                   user_id: user_data.user_id,
                                   contact_id: dialog.id
                               };
-                              this.api.http.post(this.api.url + '/app_dev.php/api/v2/deletes/inboxes.json', data, this.api.header).subscribe((data:any) => {
+                              this.api.http.post(this.api.url + '/api/v2/deletes/inboxes.json', data, this.api.header).subscribe((data:any) => {
                                   this.api.showLoad();
                                   if (data.deleted) {
                                       this.users.splice(index, 1);

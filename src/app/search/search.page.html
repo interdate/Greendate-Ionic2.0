@@ -21,7 +21,7 @@
     <ion-button expand="block" color="danger" (click)="toSearchResultsPage('search-form-1')" class="search-1">{{ form.form.submit }}</ion-button>
     <div class="or">או</div>
     <div>
-      <ion-input class="search-by-name" [(ngModel)]="form.form.username.value" (ionBlur)="showFooter()" placeholder="{{ form.form.username.label }}:" type="text"></ion-input>
+      <ion-input class="search-by-name" (ionFocus)="hideFooter()" [(ngModel)]="form.form.username.value" (ionBlur)="showFooter()" placeholder="{{ form.form.username.label }}:" type="text"></ion-input>
     </div>
 
     <ion-button expand="block" color="danger"  class="btn" (click)="toSearchResultsPage('search-form-2')">{{ form.form.submit }}</ion-button>

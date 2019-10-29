@@ -75,5 +75,10 @@ ion-content {
 @media (max-width: 320px) {
   button .button-inner {
     font-size: 0.8em; } }
+.facebook-login {
+  height: 28px;
+  width: 28px;
+  position: relative;
+  left: 6px; }
 
 /*# sourceMappingURL=login.page.css.map */

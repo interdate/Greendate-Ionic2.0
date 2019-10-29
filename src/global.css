@@ -11,6 +11,10 @@
 /*.item-block{
   width: auto;
 }*/
+.body {
+  padding-top: constant(safe-area-insert-top);
+  padding-top: env safe-area-insert-top; }
+
 .item-md.item-input.ng-valid.input-has-value:not(.input-has-focus) .item-inner {
   border-bottom-color: transparent;
   box-shadow: none; }

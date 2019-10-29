@@ -40,13 +40,13 @@ header {
   height: 42px;
   text-align: center;
   line-height: 45px;
-  top: 74px;
+  top: 89px;
   right: 9px;
   font-size: 27px;
   border: 1px solid rgba(1, 1, 1, 0.5); }
 
 .ios .back-btn {
-  top: 84px; }
+  top: 89px; }
 
 .username {
   color: #ccc;
@@ -357,10 +357,10 @@ ion-content {
 .footer-menu ul li span, .counter {
   display: block;
   position: absolute;
-  width: 26px;
-  height: 26px;
+  width: 29px;
+  height: 28px;
   text-align: center;
-  line-height: 24px;
+  line-height: 26px;
   background: #d50312;
   border-radius: 50%;
   -webkit-border-radius: 50%;
@@ -447,7 +447,7 @@ button.item-ios:not([detail-none]) .item-inner {
   padding: 10% 0; }
 
 .menu-back-btn {
-  margin: 5px 100% 19px 20px; }
+  margin: 14px 100% 19px 20px; }
 
 #menu1 .contact-arrow {
   position: relative;
@@ -535,5 +535,9 @@ ion-footer {
 
 .online, .viewed, .near-me, .inbox {
   width: 20% !important; }
+
+html, body {
+  padding-top: 0 !important;
+  --ion-safe-area-top: 16px !important; }
 
 /*# sourceMappingURL=app.css.map */

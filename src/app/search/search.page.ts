@@ -187,6 +187,10 @@ export class SearchPage {
     $('.footerMenu').show();
   }
 
+  hideFooter() {
+    $('.footerMenu').hide();
+  }
+
 
   toAdvancedPage() {
     this.router.navigate(['/advanced-search']);

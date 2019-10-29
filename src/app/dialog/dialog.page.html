@@ -17,7 +17,7 @@
 
 <ion-content #content [scrollEvents]="true">
   <!--<div class="no_results" *ngIf="messages">{{ texts?.no_results }}</div>-->
-  <ion-card>
+  <ion-card class="user-block">
     <ion-list lines="none">
     <ion-item>
       <!--<ion-avatar (click)="toProfilePage()" item-left>
@@ -54,7 +54,7 @@
 
 
   <ion-toolbar *ngIf="messages" id="form-dialog">
-    <ion-textarea  id="dialog-msg" [(ngModel)]="message" placeholder=""></ion-textarea>
+    <ion-textarea  id="dialog-msg" (click)="onOpenKeyboard()" (ionBlur)="onCloseKeyboard()" [(ngModel)]="message" placeholder=""></ion-textarea>
     <div class="clear-both"></div>
     <ion-button class="send-msg"   (click)="sendMessage()" color="danger">שלח</ion-button>
   </ion-toolbar>

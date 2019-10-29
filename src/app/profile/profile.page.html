@@ -197,7 +197,7 @@
 
       <div *ngIf="isAbuseOpen" class="abuse-form">
           <ion-item>
-            <ion-textarea (click)="test()" [(ngModel)]="formReportAbuse?.text.value" rows="3"></ion-textarea>
+            <ion-textarea (click)="onClickInput()" (ionBlur)="onBlurInput" [(ngModel)]="formReportAbuse?.text.value" rows="3"></ion-textarea>
           </ion-item>
         <div class='btn-opt'>
           <ion-button class="cancel" color="danger" (click)="reportAbuseClose()">{{

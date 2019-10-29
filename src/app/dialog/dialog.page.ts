@@ -44,10 +44,10 @@ export class DialogPage implements OnInit{
     this.user = this.api.data['user'];
     //alert(this.user);
     this.getMessages();
-    window.addEventListener('keyboardWillShow', () => {
-      console.log('keyboard will show');
-      this.scrollToBottom(500);
-    });
+    // window.addEventListener('keyboardWillShow', () => {
+    //   console.log('keyboard will show');
+    //   this.scrollToBottom(500);
+    // });
 
 
   }
@@ -87,7 +87,11 @@ export class DialogPage implements OnInit{
 
   onOpenKeyboard() {
     this.scrollToBottom(100);
-    $('.messages').css({'height':'calc(100% - 114px)'});
+  // $('.user-block').css({'margin-top':'83%'});
+  }
+ // 90 line + 93 - for ios
+  onCloseKeyboard() {
+  //  $('.user-block').css({'margin-top':'24px'});
   }
 
   back() {
@@ -126,7 +130,7 @@ export class DialogPage implements OnInit{
       this.message = '';
 
 
-    this.api.http.post(this.api.url + '/app_dev.php/api/v2/sends/' + this.user.id + '/messages', params, this.api.setHeaders(true)).subscribe((data: any) => {
+    this.api.http.post(this.api.url + '/api/v2/sends/' + this.user.id + '/messages', params, this.api.setHeaders(true)).subscribe((data: any) => {
       if (data.message) {
         this.sendPush();
         data.message['dilevered'] = true;
