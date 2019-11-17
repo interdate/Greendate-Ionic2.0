@@ -21,6 +21,19 @@
     margin-bottom: 10px;
 }
 
+.paying{
+    position: absolute;
+    background-image: url('https://www.greendate.co.il/images/main-pg-queen-icon.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    width: 48px;
+    height: 33px;
+    left: 0px;
+    top: 0px;
+    z-index: 10;
+}
+
 #the_area {
     background: url(../img/icons/the-arena.png) center no-repeat;
     width: 28px;

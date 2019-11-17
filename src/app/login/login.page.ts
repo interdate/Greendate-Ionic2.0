@@ -228,6 +228,7 @@ export class LoginPage implements OnInit{
   validate(response) {
     this.errors = '';
     if(response.status) {
+      this.api.isPay = response.isPay;
       if (response.status != "not_activated") {
         this.api.storage.set('user_data', {
           'username': response.username,
@@ -266,7 +267,7 @@ export class LoginPage implements OnInit{
       this.errors = response.is_not_active ? this.form.errors.account_is_disabled : this.form.errors.bad_credentials;
     }
     this.api.storage.get('deviceToken').then((deviceToken) => {
-    if(deviceToken) this.api.sendPhoneId(deviceToken);
+      if(deviceToken) this.api.sendPhoneId(deviceToken);
     });
 
   }

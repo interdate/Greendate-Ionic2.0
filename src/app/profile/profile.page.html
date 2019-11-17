@@ -53,6 +53,7 @@
     <ion-spinner class="bg" *ngIf="!user?.iam"></ion-spinner>
     <div class="content" #content>
       <div class="pmtitle">
+        <div *ngIf="user?.isPaying" class="paying"></div>
         <div *ngIf="user?.isNew" class="new-user"></div>
         <div *ngIf="user?.isOnline" class="online-user"></div>
         <span class="age"> {{user?.age}} </span> <strong style="float:right;"> {{user?.username}}, </strong>

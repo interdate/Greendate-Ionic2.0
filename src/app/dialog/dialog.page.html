@@ -32,8 +32,15 @@
       <ion-grid>
         <ion-row>
           <ion-col width-57>
-            <ion-card-content class="mtext" [innerHTML]="msg?.text" item-left>
+            <ion-card-content *ngIf="msg?.text.length > 0" class="mtext" [innerHTML]="msg?.text" item-left>
             <!--{{msg?.text}}-->
+          </ion-card-content>
+          <ion-card-content item-left *ngIf="msg?.text.length === 0 && msg?.hasPoints == 0">
+            {{ msg?.paymentText }} <span class="linkPay" color="blue" (click)="subscription()">{{ msg?.payLinkText }}</span>
+          </ion-card-content>
+          <ion-card-content item-left *ngIf="msg?.text.length === 0 && msg?.hasPoints == 1">
+            {{ msg?.paymentText }} <span class="linkPay" color="blue" (click)="subscription()">{{ msg?.payLinkText }}</span> או
+            <span color="blue" class="linkPay" (click)="useFreePointToReadMessage(msg)">{{ msg?.pointsText }}</span>
           </ion-card-content>
           </ion-col>
 

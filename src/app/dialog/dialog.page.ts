@@ -30,6 +30,7 @@ export class DialogPage implements OnInit{
   page: any = 1;
   addMoreMessages: any;
   messData: any;
+  allowedToReadMessage: any;
 
   constructor(public api: ApiQuery,
               public router: Router,
@@ -60,6 +61,7 @@ export class DialogPage implements OnInit{
           this.user = data.dialog.contact;
           this.texts = data.texts;
           this.messages = data.history;
+          this.allowedToReadMessage = data.allowedToReadMessage;
           for (let i = 0; i < this.messages.length; i++) {
               if(this.messages[i].isRead == false) {
                   this.notReadMessage.push(this.messages[i].id);
@@ -135,6 +137,7 @@ export class DialogPage implements OnInit{
         this.sendPush();
         data.message['dilevered'] = true;
         this.messages[this.messData.message.messPoss] = data.message;
+        this.allowedToReadMessage = data.allowedToReadMessage;
         this.notReadMessage.push(data.message.id);
         this.scrollToBottom(150);
       } else {
@@ -159,7 +162,7 @@ export class DialogPage implements OnInit{
       console.log(data);
       //$('.messages').css('overflow', 'hidden');
       for (let message of data.history) {
-        this.messages.unshift(message)
+        this.messages.unshift(message);
       }
       console.log(this.messages);
       this.addMoreMessages = data.history.length < 30 ? false : true;
@@ -172,19 +175,6 @@ export class DialogPage implements OnInit{
   }
 
   getNewMessages() {
-  //alert(1)
-    // let messagesIds = ''
-    // for(let mess of this.notReadMessage) {
-    //   messagesIds += mess + ',';
-    // }
-    // for (let i = 0; i < this.notReadMessage.length; i++) {
-    //   if(i == 0) {
-    //     notReadMessageStr += '?messages[]=' + this.notReadMessage[i];
-    //   }else {
-    //     notReadMessageStr += '&messages[]=' + this.notReadMessage[i];
-    //   }
-    //
-    // }
 
     let myLastMess = this.notReadMessage.slice(-1)[0] ? this.notReadMessage.slice(-1)[0] : false;
 
@@ -194,32 +184,35 @@ export class DialogPage implements OnInit{
    // this.api.http.get(this.api.url + '/api/v2/chats/' + this.user.id + '/new/messages' + notReadMessageStr, this.api.setHeaders(true)).subscribe((data:any) => {
     this.api.http.get(this.api.url + '/api/v2/chats/' + this.user.id + '/new/messages?lastMess=' + myLastMess, this.api.setHeaders(true)).subscribe((data:any) => {
 
-     if (data.lastIsRead && data.lastIsRead[0].isRead == 1) {
-       //alert(1);
-       console.log(this.notReadMessage);
-       for(let y = this.messages.length - 1, x = 0; x < this.notReadMessage.length; x++, y--){
+      if (data.lastIsRead && data.lastIsRead[0].isRead == 1 && this.allowedToReadMessage) {
+        //alert(1);
+        console.log(this.notReadMessage);
+        for(let y = this.messages.length - 1, x = 0; x < this.notReadMessage.length; x++, y--){
          this.messages[y].isRead = true;
          console.log(this.messages);
-       }
-       this.notReadMessage = [];
-     }
+        }
+        this.notReadMessage = [];
+      }
       console.log('new ' + JSON.stringify(data));
       if (data.newMessages && data.newMessages.length > 0) {
        // //alert(1);
         for (let message of data.newMessages) {
        //  alert(2);
-          this.readMessagesStatus();
-          for(let y = this.messages.length - 1, x = 0; x < this.notReadMessage.length; x++, y--){
-            this.messages[y].isRead = true;
-            console.log(this.messages);
+          if (!this.allowedToReadMessage) {
+            //this.readMessagesStatus();
+          } else {
+            for (let y = this.messages.length - 1, x = 0; x < this.notReadMessage.length; x++, y--) {
+              this.messages[y].isRead = true;
+              console.log(this.messages);
+            }
+            this.notReadMessage = [];
           }
-          this.notReadMessage = [];
           this.messages.push(message);
-          this.scrollToBottom(150);
+          this.scrollToBottom(300);
           var params = JSON.stringify({
             message_id: message.id
           });
-          this.api.http.post(this.api.url + '/api/v2/reads/' + this.user.id + '/messages', params, this.api.setHeaders(true)).subscribe((data:any) => {
+          this.api.http.post(this.api.url + '/api/v2/reads/' + this.user.id + '/messages', params, this.api.setHeaders(true)).subscribe((data: any) => {
 
           });
         }
@@ -245,14 +238,14 @@ export class DialogPage implements OnInit{
     e.preventDefault();
   }
 
-  sandReadMessage(){
-    var params = JSON.stringify({
-      message: 'ok-1990234'
-    });
-
-    this.api.http.post(this.api.url + '/api/v2/sends/' + this.user.id + '/messages', params, this.api.setHeaders(true)).subscribe(data => {
-    });
-  }
+  // sandReadMessage(){
+  //   var params = JSON.stringify({
+  //     message: 'ok-1990234'
+  //   });
+  //
+  //   this.api.http.post(this.api.url + '/api/v2/sends/' + this.user.id + '/messages', params, this.api.setHeaders(true)).subscribe(data => {
+  //   });
+  // }
 
   deleteMessage (message, index) { //message.from
 
@@ -309,7 +302,9 @@ export class DialogPage implements OnInit{
     // }
   }
 
-
+  subscription() {
+    this.router.navigate(['/subscription']);
+  }
 
   ionViewWillLeave() {
     clearInterval(this.checkChat);
@@ -345,6 +340,22 @@ export class DialogPage implements OnInit{
       $('textarea').val('');
     });
 
+  }
+
+  useFreePointToReadMessage(message) {
+    let index = this.api.functiontofindIndexByKeyValue(this.messages, 'id', message.id);
+    this.api.http.get(this.api.url + '/api/v2/chats/' + message.id + '/use/free/point/to/read/message.json', this.api.setHeaders(true)).subscribe((data:any) => {
+      this.messages[index].text = data.messageText;
+      //this.setMessagesAsRead([message.id]);
+      if (!data.userHasFreePoints) {
+        // Update page
+        //this.messages = [];
+        //this.getMessages();
+        for (let i = 0; i < this.messages.length; i++) {
+          this.messages[i].hasPoints = 0;
+        };
+      }
+    });
   }
 
   ionViewDidLoad() { }

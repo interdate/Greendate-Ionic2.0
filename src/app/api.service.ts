@@ -31,10 +31,12 @@ export class ApiQuery {
   back: any = false;
   storageRes: any;
   footer: any;
-  pageName: any =false;
-  loading: any;usersChooses: any = {};
+  pageName: any = false;
+  loading: any;
+  usersChooses: any = {};
   firstOpen: boolean;
   isLoading = false;
+  isPay: any;
 
   constructor(public storage: Storage,
               public loadingCtrl: LoadingController,
@@ -42,7 +44,7 @@ export class ApiQuery {
               public http: HttpClient,
               private sanitizer: DomSanitizer) {
 
-
+    //export JAVA_HOME=`/usr/libexec/java_home -v 1.8.0_221`
     //this.url = 'http://localhost:8100';
     this.url = 'https://www.greendate.co.il';
     //this.url = 'http://10.0.0.6:8100';
@@ -62,6 +64,15 @@ export class ApiQuery {
     this.http.post(this.url + '/api/v2/phones', data ,this.setHeaders(true)).subscribe(data => {
      // alert('data after send id: ' + JSON.stringify(data));
     }) , err=> console.log('error was in send phone: ' + err);
+  }
+
+  functiontofindIndexByKeyValue(arraytosearch, key, valuetosearch) {
+    for (var i = 0; i < arraytosearch.length; i++) {
+      if (arraytosearch[i][key] == valuetosearch) {
+        return i;
+      }
+    }
+    return null;
   }
 
   async toastCreate(mess, duration = 60000) {

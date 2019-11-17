@@ -56,9 +56,10 @@ export class AppComponent {
   avatar: string = '';
   stats: string = '';
   interval: any = true;
+  //rootPage:any = 'HomePage';
 
 
-  androidVesion = '1.0.1';
+  androidVesion = '1.1.2';
   iosVersion = '1.0.0';
 
   constructor(public platform: Platform,
@@ -89,12 +90,14 @@ export class AppComponent {
         this.api.setHeaders(true, val.username, val.password);
         this.menu_items = this.menu_items_login;
         this.getBingo();
-        this.router.navigate(['/home']);
+        if (this.router.url === '/' || this.router.url === '/home') {
+          this.router.navigate(['/home']);
+        }
       }
     });
 
     this.closeMsg();
-    var that = this;
+    let that = this;
     setInterval(function () {
       if (! (that.api.username == 'null' || that.api.username == 'noname' || that.api.username == false)) {
            that.getBingo();
@@ -180,7 +183,7 @@ export class AppComponent {
 
   setLocation() {
     this.geolocation.getCurrentPosition().then(pos => {
-      var params = JSON.stringify({
+      let params = JSON.stringify({
         latitude: pos.coords.latitude.toString(),
         longitude: pos.coords.longitude.toString()
       });
@@ -211,6 +214,7 @@ export class AppComponent {
       this.menu_items_footer1[3].count = statistics.newMessagesNumber;
       this.menu_items_footer2[0].count = statistics.favorited;
       this.menu_items_footer2[1].count = statistics.favoritedMe;
+      this.api.isPay = data.isPay;
 
       this.bannerStatus();
 
@@ -263,6 +267,8 @@ export class AppComponent {
       {_id: 'stats', icon: 'stats', title: menu.contacts, url: '/profile', count: ''},
       {_id: '', icon: 'search', title: menu.search, url: '/search', count: ''},
       {_id: '', icon: 'information-circle', title: 'שאלות נפוצות', url: '/faq', count: ''},
+      {_id: '', icon: 'mail', title: menu.contact_us, url: '/contact-us', count: ''},
+      {_id: 'subscription', icon: 'ribbon', title: menu.subscription, url: '/subscription', count: ''},
     ];
 
     this.menu_items_login = [
@@ -273,6 +279,7 @@ export class AppComponent {
       {_id: '', icon: 'search', title: menu.search, url: '/search', count: ''},
       {_id: '', icon: 'information-circle', title: 'שאלות נפוצות', url: '/faq', count: ''},
       {_id: '', icon: 'mail', title: menu.contact_us, url: '/contact-us', count: ''},
+      {_id: 'subscription', icon: 'ribbon', title: menu.subscription, url: '/subscription', count: ''},
     ];
 
     this.menu_items_settings = [
@@ -616,7 +623,9 @@ export class AppComponent {
 
       }
     }
-    if (((this.api.pageName == 'ActivationPage') && this.status == 'login')) this.router.navigate(['/home']);
+    if (this.api.pageName == 'ActivationPage' && this.status == 'login') {
+      this.router.navigate(['/home']);
+    }
   }
 
   async alert(title, subTitle) {
@@ -637,7 +646,9 @@ export class AppComponent {
       //   this.market.open('il.co.greendate');
       // }
 
-      if((this.platform.is('android') && data.android_version != this.androidVesion) || (this.platform.is('ios') && data.ios_version != this.iosVersion)) {
+      if((this.platform.is('android') && data.android_version != this.androidVesion && data.android_version != '1.0.1')
+          || (this.platform.is('ios') && data.ios_version != this.iosVersion)
+      ) {
         this.alertCtrl.create({
           header: data.title,
           message: data.message,
@@ -653,7 +664,7 @@ export class AppComponent {
               }
             }
             ]
-        }).then(alert => alert.present())
+        }).then(alert => alert.present());
       }
 
 
@@ -766,8 +777,6 @@ export class AppComponent {
               $('.content').css({'padding-bottom': 0});
           }
 
-
-
         });
 
 
@@ -836,11 +845,4 @@ export class AppComponent {
   }
 }
 
-/*
- INSERT INTO `users_animals`(`user_id`, `animal_id`)
- SELECT
- `id`, `animals_id`
- FROM
- `user`
 
- */

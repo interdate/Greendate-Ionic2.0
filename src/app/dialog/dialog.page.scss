@@ -176,6 +176,13 @@ ion-toolbar {
     position:relative;
   }
 
+  .linkPay{
+    color: #8acd16;
+    text-decoration: none;
+    border: none;
+    transition: ease 0.2s;
+  }
+
 
 ion-content {
   display: flex;

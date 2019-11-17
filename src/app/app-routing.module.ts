@@ -27,6 +27,7 @@ const routes: Routes = [
   { path: 'change-photos', loadChildren: './change-photos/change-photos.module#ChangePhotosPageModule' },
   { path: 'change-password', loadChildren: './change-password/change-password.module#ChangePasswordPageModule' },
   { path: 'edit-profile', loadChildren: './edit-profile/edit-profile.module#EditProfilePageModule' },
+  { path: 'subscription', loadChildren: './subscription/subscription.module#SubscriptionPageModule' },
   /*
 
    { path: 'activation', loadChildren: './activation/activation.module#ActivationPageModule' },
